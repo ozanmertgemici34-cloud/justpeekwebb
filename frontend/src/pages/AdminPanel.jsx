@@ -17,6 +17,7 @@ const AdminPanel = () => {
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [emails, setEmails] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Redirect if not admin
@@ -33,14 +34,16 @@ const AdminPanel = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsData, usersData, emailsData] = await Promise.all([
+      const [statsData, usersData, emailsData, requestsData] = await Promise.all([
         adminAPI.getStats(),
         adminAPI.getAllUsers(),
-        emailAPI.getAllEmails()
+        emailAPI.getAllEmails(),
+        adminAPI.getPurchaseRequests()
       ]);
       setStats(statsData);
       setUsers(usersData);
       setEmails(emailsData);
+      setRequests(requestsData);
     } catch (error) {
       console.error('Error loading admin data:', error);
     } finally {
@@ -108,18 +111,20 @@ const AdminPanel = () => {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-4 mb-8 border-b border-gray-800">
-            {['overview', 'users', 'emails'].map((tab) => (
+          <div className="flex gap-4 mb-8 border-b border-gray-800 overflow-x-auto">
+            {['overview', 'users', 'emails', 'requests'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 font-semibold transition-all ${
+                className={`px-6 py-3 font-semibold transition-all whitespace-nowrap ${
                   activeTab === tab
                     ? 'text-red-500 border-b-2 border-red-500'
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                {t(`admin.tabs.${tab}`)}
+                {tab === 'requests' 
+                  ? (language === 'tr' ? 'Satın Alma Talepleri' : 'Purchase Requests')
+                  : t(`admin.tabs.${tab}`)}
               </button>
             ))}
           </div>
@@ -140,6 +145,67 @@ const AdminPanel = () => {
                   <StatCard icon={<ShoppingBag />} label={t('admin.stats.totalRevenue')} value={stats.total_revenue} color="red" />
                   <StatCard icon={<Ban />} label={language === 'tr' ? 'Yasaklı Kullanıcı' : 'Banned Users'} value={stats.banned_users} color="red" />
                   <StatCard icon={<BarChart3 />} label={t('admin.stats.todayRegistrations')} value={stats.today_registrations} color="green" />
+                  <StatCard icon={<ShoppingBag />} label={language === 'tr' ? 'Bekleyen Talepler' : 'Pending Requests'} value={stats.pending_purchase_requests} color="yellow" />
+                  <StatCard icon={<Users />} label={language === 'tr' ? 'Bu Hafta Yeni' : 'New This Week'} value={stats.new_users_this_week} color="blue" />
+                </div>
+              )}
+
+              {/* Purchase Requests Tab */}
+              {activeTab === 'requests' && (
+                <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-gray-900/50 border-b border-gray-800">
+                        <tr>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">Email</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">Discord</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Ürün' : 'Product'}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Durum' : 'Status'}</th>
+                          <th className="text-right px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'İşlemler' : 'Actions'}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {requests.map((req) => (
+                          <tr key={req.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
+                            <td className="px-6 py-4 text-white">{req.email}</td>
+                            <td className="px-6 py-4 text-gray-400">{req.discord_username}</td>
+                            <td className="px-6 py-4 text-gray-400">{req.product}</td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                                req.status === 'approved' ? 'bg-green-500/10 text-green-500' :
+                                req.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
+                                'bg-yellow-500/10 text-yellow-500'
+                              }`}>
+                                {req.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                {req.status === 'pending' && (
+                                  <>
+                                    <button
+                                      onClick={() => handleRequestAction(req.id, 'approved')}
+                                      className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors"
+                                      title={language === 'tr' ? 'Onayla' : 'Approve'}
+                                    >
+                                      <CheckCircle size={18} />
+                                    </button>
+                                    <button
+                                      onClick={() => handleRequestAction(req.id, 'rejected')}
+                                      className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                      title={language === 'tr' ? 'Reddet' : 'Reject'}
+                                    >
+                                      <Ban size={18} />
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 
@@ -272,3 +338,12 @@ const StatCard = ({ icon, label, value, color }) => {
 };
 
 export default AdminPanel;
+
+  const handleRequestAction = async (requestId, action) => {
+    try {
+      await adminAPI.updateRequestStatus(requestId, action);
+      await loadData();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error updating request');
+    }
+  };
