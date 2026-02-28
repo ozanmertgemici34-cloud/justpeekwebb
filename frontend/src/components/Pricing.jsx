@@ -14,7 +14,7 @@ const Pricing = () => {
     {
       id: 'weekly',
       name: t('pricing.plans.weekly.name'),
-      price: '$5.99',
+      price: '$2.99',
       duration: t('pricing.plans.weekly.duration'),
       icon: Zap,
       popular: false,
@@ -28,7 +28,7 @@ const Pricing = () => {
     {
       id: 'monthly',
       name: t('pricing.plans.monthly.name'),
-      price: '$4.99',
+      price: '$6.99',
       duration: t('pricing.plans.monthly.duration'),
       icon: Crown,
       popular: true,

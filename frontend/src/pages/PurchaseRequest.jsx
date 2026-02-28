@@ -178,9 +178,9 @@ const PurchaseRequest = () => {
                       onChange={(e) => setFormData({ ...formData, product: e.target.value })}
                       className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all"
                     >
-                      <option value="JustPeek - 1 Week">JustPeek - 1 {language === 'tr' ? 'Hafta' : 'Week'} ($5.99)</option>
-                      <option value="JustPeek - 1 Month">JustPeek - 1 {language === 'tr' ? 'Ay' : 'Month'} ($4.99)</option>
-                      <option value="JustPeek - 2 Months">JustPeek - 2 {language === 'tr' ? 'Ay' : 'Months'} ($6.99)</option>
+                      <option value="JustPeek - 1 Week">JustPeek - 1 {language === 'tr' ? 'Hafta' : 'Week'} ($2.99)</option>
+                      <option value="JustPeek - 1 Month">JustPeek - 1 {language === 'tr' ? 'Ay' : 'Month'} ($6.99)</option>
+                      <option value="JustPeek - 2 Months">JustPeek - 2 {language === 'tr' ? 'Ay' : 'Months'} ($11.99)</option>
                     </select>
                   </div>
 
