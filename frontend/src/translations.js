@@ -187,10 +187,6 @@ export const translations = {
         }
       }
     },
-          ]
-        }
-      }
-    },
     
     // Footer
     footer: {
