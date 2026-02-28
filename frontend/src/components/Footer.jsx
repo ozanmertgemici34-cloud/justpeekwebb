@@ -73,7 +73,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
-            © 2024 JustPeek Internal. Tüm hakları saklıdır.
+            {t('footer.copyright')}
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="text-gray-500 hover:text-red-500 transition-colors text-sm">
