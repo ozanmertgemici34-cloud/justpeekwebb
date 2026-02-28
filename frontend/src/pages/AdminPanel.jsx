@@ -417,13 +417,18 @@ export default AdminPanel;
   };
 
   const handleClearProcessed = async () => {
-    const processedRequests = requests.filter(r => r.status !== 'pending');
-    if (processedRequests.length === 0) {
-      alert('Temizlenecek işlenmiş talep yok');
+    if (!requests || requests.length === 0) {
+      alert(language === 'tr' ? 'Temizlenecek talep yok' : 'No requests to clear');
       return;
     }
     
-    if (!window.confirm(`${processedRequests.length} işlenmiş talebi temizlemek istediğinizden emin misiniz?`)) return;
+    const processedRequests = requests.filter(r => r.status !== 'pending');
+    if (processedRequests.length === 0) {
+      alert(language === 'tr' ? 'Temizlenecek işlenmiş talep yok' : 'No processed requests to clear');
+      return;
+    }
+    
+    if (!window.confirm(`${processedRequests.length} ${language === 'tr' ? 'işlenmiş talebi temizlemek istediğinizden emin misiniz?' : 'processed requests will be deleted. Are you sure?'}`)) return;
     
     try {
       await Promise.all(
@@ -432,11 +437,13 @@ export default AdminPanel;
       await loadData();
       setSelectedRequests([]);
     } catch (error) {
-      alert('Temizleme işlemi sırasında hata oluştu');
+      alert(language === 'tr' ? 'Temizleme işlemi sırasında hata oluştu' : 'Error during cleanup operation');
     }
   };
 
   const toggleSelectAll = () => {
+    if (!requests || requests.length === 0) return;
+    
     if (selectedRequests.length === requests.length) {
       setSelectedRequests([]);
     } else {

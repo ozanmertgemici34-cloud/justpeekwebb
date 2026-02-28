@@ -5,19 +5,19 @@ import { features } from '../mock';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
-const iconMap = {
-  Target: Target,
-  Eye: Eye,
-  Zap: Zap,
-  Crosshair: Crosshair,
-  Users: Users,
-  Ghost: Ghost
-};
-
 const Features = () => {
   const { language } = useLanguage();
   const t = (key) => getTranslation(language, key);
   
+  const iconMap = {
+    Target: Target,
+    Eye: Eye,
+    Zap: Zap,
+    Crosshair: Crosshair,
+    Users: Users,
+    Ghost: Ghost
+  };
+
   return (
     <section id="features" className="relative py-24 bg-gradient-to-b from-black to-gray-900">
       {/* Background Effects */}

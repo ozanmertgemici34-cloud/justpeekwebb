@@ -1,8 +1,13 @@
 import React from 'react';
 import { Shield, Lock, EyeOff, CheckCircle } from 'lucide-react';
 import { securityFeatures } from '../mock';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../translations';
 
 const Security = () => {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, key);
+  
   return (
     <section id="security" className="relative py-24 bg-black overflow-hidden">
       {/* Background Effects */}
@@ -17,15 +22,21 @@ const Security = () => {
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/30 rounded-full mb-6">
               <Shield size={16} className="text-red-500" />
-              <span className="text-sm text-red-400 font-semibold">Hayalet İmza</span>
+              <span className="text-sm text-red-400 font-semibold">{t('security.badge')}</span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-              Efsanevi <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">"Stealth"</span> Koruması
+              {t('security.title')}{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
+                {t('security.titleHighlight')}
+              </span>{' '}
+              {t('security.titleEnd')}
             </h2>
 
             <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-              Güvenlik bizim için bir özellik değil, bir temeldir. JustPeek, rakipsiz bir gizlilik katmanıyla donatılmıştır. Biz ona <span className="text-red-500 font-semibold">"Hayalet İmza"</span> diyoruz.
+              {t('security.description')}{' '}
+              <span className="text-red-500 font-semibold">{t('security.ghostSignature')}</span>{' '}
+              {t('security.descriptionEnd')}
             </p>
 
             {/* Security Features List */}

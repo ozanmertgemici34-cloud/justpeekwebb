@@ -23,18 +23,21 @@ export const AuthProvider = ({ children }) => {
         const userData = JSON.parse(savedUser);
         setUser(userData);
         
-        // Verify token with backend
-        authAPI.getMe()
-          .then((response) => {
-            const updatedUser = { ...userData, ...response };
-            setUser(updatedUser);
-            localStorage.setItem('user', JSON.stringify(updatedUser));
-          })
-          .catch(() => {
-            // Token invalid, clear user
-            logout();
-          });
+        // Verify token with backend (optional - don't logout on error)
+        if (userData.token) {
+          authAPI.getMe()
+            .then((response) => {
+              const updatedUser = { ...userData, ...response };
+              setUser(updatedUser);
+              localStorage.setItem('user', JSON.stringify(updatedUser));
+            })
+            .catch((error) => {
+              // Don't logout on verification error - token might still be valid
+              console.warn('Token verification failed, keeping user logged in:', error);
+            });
+        }
       } catch (e) {
+        console.error('Error parsing user data:', e);
         localStorage.removeItem('user');
       }
     }
