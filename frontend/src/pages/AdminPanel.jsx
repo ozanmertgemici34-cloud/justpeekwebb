@@ -18,6 +18,7 @@ const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const [emails, setEmails] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [selectedRequests, setSelectedRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Redirect if not admin
@@ -152,65 +153,111 @@ const AdminPanel = () => {
 
               {/* Purchase Requests Tab */}
               {activeTab === 'requests' && (
-                <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-gray-900/50 border-b border-gray-800">
-                        <tr>
-                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">Email</th>
-                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">Discord</th>
-                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Ürün' : 'Product'}</th>
-                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Mesaj' : 'Message'}</th>
-                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Durum' : 'Status'}</th>
-                          <th className="text-right px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'İşlemler' : 'Actions'}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {requests.map((req) => (
-                          <tr key={req.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
-                            <td className="px-6 py-4 text-white">{req.email}</td>
-                            <td className="px-6 py-4 text-gray-400">{req.discord_username}</td>
-                            <td className="px-6 py-4 text-gray-400">{req.product}</td>
-                            <td className="px-6 py-4 text-gray-400 max-w-xs truncate" title={req.message || 'N/A'}>
-                              {req.message || '-'}
-                            </td>
-                            <td className="px-6 py-4">
-                              <span className={`inline-block px-3 py-1 rounded-full text-sm ${
-                                req.status === 'approved' ? 'bg-green-500/10 text-green-500' :
-                                req.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
-                                'bg-yellow-500/10 text-yellow-500'
-                              }`}>
-                                {req.status}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                {req.status === 'pending' && (
-                                  <>
-                                    <button
-                                      onClick={() => handleRequestAction(req.id, 'approved')}
-                                      className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors"
-                                      title={language === 'tr' ? 'Onayla' : 'Approve'}
-                                    >
-                                      <CheckCircle size={18} />
-                                    </button>
-                                    <button
-                                      onClick={() => handleRequestAction(req.id, 'rejected')}
-                                      className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                      title={language === 'tr' ? 'Reddet' : 'Reject'}
-                                    >
-                                      <Ban size={18} />
-                                    </button>
-                                  </>
-                                )}
-                              </div>
-                            </td>
+                <>
+                  {/* Bulk Actions */}
+                  {requests.length > 0 && (
+                    <div className="mb-4 flex items-center justify-between bg-gray-900 border border-gray-800 rounded-xl p-4">
+                      <div className="flex items-center gap-4">
+                        <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={selectedRequests.length === requests.length && requests.length > 0}
+                            onChange={toggleSelectAll}
+                            className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-red-600 focus:ring-red-600"
+                          />
+                          <span className="text-sm">
+                            {language === 'tr' ? 'Tümünü Seç' : 'Select All'} ({selectedRequests.length})
+                          </span>
+                        </label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {selectedRequests.length > 0 && (
+                          <button
+                            onClick={handleBulkDelete}
+                            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-semibold"
+                          >
+                            {language === 'tr' ? `Seçilenleri Sil (${selectedRequests.length})` : `Delete Selected (${selectedRequests.length})`}
+                          </button>
+                        )}
+                        <button
+                          onClick={handleClearProcessed}
+                          className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-semibold"
+                        >
+                          {language === 'tr' ? 'İşlenenleri Temizle' : 'Clear Processed'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="bg-gray-900/50 border-b border-gray-800">
+                          <tr>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold w-12"></th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">Email</th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">Discord</th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Ürün' : 'Product'}</th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Mesaj' : 'Message'}</th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Durum' : 'Status'}</th>
+                            <th className="text-right px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'İşlemler' : 'Actions'}</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {requests.map((req) => (
+                            <tr key={req.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
+                              <td className="px-6 py-4">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedRequests.includes(req.id)}
+                                  onChange={() => toggleSelectRequest(req.id)}
+                                  className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-red-600 focus:ring-red-600"
+                                />
+                              </td>
+                              <td className="px-6 py-4 text-white">{req.email}</td>
+                              <td className="px-6 py-4 text-gray-400">{req.discord_username}</td>
+                              <td className="px-6 py-4 text-gray-400">{req.product}</td>
+                              <td className="px-6 py-4 text-gray-400 max-w-xs truncate" title={req.message || 'N/A'}>
+                                {req.message || '-'}
+                              </td>
+                              <td className="px-6 py-4">
+                                <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                                  req.status === 'approved' ? 'bg-green-500/10 text-green-500' :
+                                  req.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
+                                  'bg-yellow-500/10 text-yellow-500'
+                                }`}>
+                                  {req.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                  {req.status === 'pending' && (
+                                    <>
+                                      <button
+                                        onClick={() => handleRequestAction(req.id, 'approved')}
+                                        className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors"
+                                        title={language === 'tr' ? 'Onayla' : 'Approve'}
+                                      >
+                                        <CheckCircle size={18} />
+                                      </button>
+                                      <button
+                                        onClick={() => handleRequestAction(req.id, 'rejected')}
+                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                        title={language === 'tr' ? 'Reddet' : 'Reject'}
+                                      >
+                                        <Ban size={18} />
+                                      </button>
+                                    </>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
 
               {/* Users Tab */}
@@ -347,7 +394,60 @@ export default AdminPanel;
     try {
       await adminAPI.updateRequestStatus(requestId, action);
       await loadData();
+      setSelectedRequests([]);
     } catch (error) {
       alert(error.response?.data?.detail || 'Error updating request');
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedRequests.length === 0) return;
+    
+    if (!window.confirm(`${selectedRequests.length} talebi silmek istediğinizden emin misiniz?`)) return;
+    
+    try {
+      await Promise.all(
+        selectedRequests.map(id => adminAPI.deleteRequest(id))
+      );
+      await loadData();
+      setSelectedRequests([]);
+    } catch (error) {
+      alert('Silme işlemi sırasında hata oluştu');
+    }
+  };
+
+  const handleClearProcessed = async () => {
+    const processedRequests = requests.filter(r => r.status !== 'pending');
+    if (processedRequests.length === 0) {
+      alert('Temizlenecek işlenmiş talep yok');
+      return;
+    }
+    
+    if (!window.confirm(`${processedRequests.length} işlenmiş talebi temizlemek istediğinizden emin misiniz?`)) return;
+    
+    try {
+      await Promise.all(
+        processedRequests.map(r => adminAPI.deleteRequest(r.id))
+      );
+      await loadData();
+      setSelectedRequests([]);
+    } catch (error) {
+      alert('Temizleme işlemi sırasında hata oluştu');
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedRequests.length === requests.length) {
+      setSelectedRequests([]);
+    } else {
+      setSelectedRequests(requests.map(r => r.id));
+    }
+  };
+
+  const toggleSelectRequest = (id) => {
+    if (selectedRequests.includes(id)) {
+      setSelectedRequests(selectedRequests.filter(rid => rid !== id));
+    } else {
+      setSelectedRequests([...selectedRequests, id]);
     }
   };
