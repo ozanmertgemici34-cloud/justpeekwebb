@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import LanguageSwitcher from './LanguageSwitcher';
+import NotificationBell from './NotificationBell';
 import { Menu, X, User, LogOut, ShoppingBag } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -69,6 +70,8 @@ const Navbar = () => {
             </button>
 
             <LanguageSwitcher />
+
+            {user && user.role !== 'admin' && <NotificationBell />}
 
             {user ? (
               <>

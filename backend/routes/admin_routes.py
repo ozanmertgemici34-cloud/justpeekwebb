@@ -60,6 +60,30 @@ async def update_purchase_request_status(
         {"$set": {"status": status, "updated_at": datetime.utcnow()}}
     )
     
+    # Create notification for user
+    if request.get("user_id"):
+        if status == "approved":
+            notification = {
+                "user_id": request["user_id"],
+                "title": "Satın Alma Talebiniz Onaylandı! 🎉",
+                "message": f"{request['product']} talebiniz onaylandı. Discord'a katılarak işlemi tamamlayabilirsiniz.",
+                "type": "success",
+                "read": False,
+                "created_at": datetime.utcnow()
+            }
+        elif status == "rejected":
+            notification = {
+                "user_id": request["user_id"],
+                "title": "Satın Alma Talebiniz Reddedildi",
+                "message": f"{request['product']} talebiniz reddedildi. Daha fazla bilgi için Discord'dan iletişime geçebilirsiniz.",
+                "type": "error",
+                "read": False,
+                "created_at": datetime.utcnow()
+            }
+        
+        if status in ["approved", "rejected"]:
+            await db.notifications.insert_one(notification)
+    
     # If approved, create purchase and notify user
     if status == "approved" and request.get("user_id"):
         try:

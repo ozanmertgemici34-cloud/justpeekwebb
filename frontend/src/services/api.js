@@ -150,4 +150,27 @@ export const userAPI = {
   },
 };
 
+// Notification API
+export const notificationAPI = {
+  getNotifications: async () => {
+    const response = await api.get('/notifications/');
+    return response.data;
+  },
+  
+  markAsRead: async (notificationId) => {
+    const response = await api.put(`/notifications/${notificationId}/read`);
+    return response.data;
+  },
+  
+  deleteNotification: async (notificationId) => {
+    const response = await api.delete(`/notifications/${notificationId}`);
+    return response.data;
+  },
+  
+  markAllAsRead: async () => {
+    const response = await api.post('/notifications/mark-all-read');
+    return response.data;
+  },
+};
+
 export default api;

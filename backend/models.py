@@ -73,6 +73,18 @@ class PurchaseRequestResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class NotificationResponse(BaseModel):
+    id: str
+    user_id: str
+    title: str
+    message: str
+    type: str  # success, error, info, warning
+    read: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
 class EmailCreate(BaseModel):
     email: EmailStr
 

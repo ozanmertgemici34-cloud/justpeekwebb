@@ -12,6 +12,7 @@ from routes.purchase_routes import router as purchase_router
 from routes.purchase_request_routes import router as purchase_request_router
 from routes.email_routes import router as email_router
 from routes.admin_routes import router as admin_router
+from routes.notification_routes import router as notification_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -30,6 +31,7 @@ app.include_router(purchase_router)
 app.include_router(purchase_request_router)
 app.include_router(email_router)
 app.include_router(admin_router)
+app.include_router(notification_router)
 
 # Root endpoint
 @app.get("/api/")
