@@ -431,44 +431,64 @@ export const translations = {
     
     // Pricing Section
     pricing: {
-      title: "Simple and Transparent",
-      titleHighlight: "Pricing",
-      subtitle: "Choose the plan that suits you best and get started",
+      title: "Simple, Secure and Transparent Pricing",
+      subtitle: "Instant access. No hidden fees. No auto-renewal. You only purchase again when you want to.",
       popular: "MOST POPULAR",
       purchase: "Purchase",
       loginToSee: "Sign in to see price",
       loginToPurchase: "Sign In & Purchase",
+      faqTitle: "Frequently Asked Questions",
+      globalBanner: "Thousands of users worldwide choose JustPeek.",
+      trust: [
+        "Secure payment infrastructure",
+        "Instant activation",
+        "No auto-billing",
+        "24/7 support"
+      ],
+      faq: {
+        q1: "Is this a subscription?",
+        a1: "No. There is no auto-renewal. When your period ends, you only purchase again if you want to.",
+        q2: "When does access start?",
+        a2: "It activates instantly after payment.",
+        q3: "Can I purchase again anytime?",
+        a3: "Yes. Even if your account is inactive, you can reactivate it anytime."
+      },
       plans: {
         weekly: {
           name: "Weekly",
           duration: "7 Days",
+          tagline: "Ideal for short-term use",
+          bottomNote: "Activates instantly",
           features: [
             "All Premium Features",
+            "7 Days Full Access",
             "24/7 Support",
-            "Auto Updates",
-            "7 Days Access"
+            "Quick and risk-free trial"
           ]
         },
         monthly: {
           name: "1 Month",
           duration: "30 Days",
+          tagline: "The most preferred plan",
+          bottomNote: "Most users choose this plan",
           features: [
             "All Premium Features",
-            "24/7 Priority Support",
-            "Auto Updates",
-            "30 Days Access",
-            "Best Value!"
+            "30 Days Uninterrupted Access",
+            "Priority Support",
+            "Best price/performance"
           ]
         },
         bimonthly: {
           name: "2 Months",
           duration: "60 Days",
+          tagline: "The best option for long-term use",
+          saveBadge: "Best Value Pack",
+          bottomNote: "More time, more savings",
           features: [
             "All Premium Features",
-            "24/7 VIP Support",
-            "Auto Updates",
-            "60 Days Access",
-            "Maximum Savings"
+            "60 Days Full Access",
+            "VIP Priority Support",
+            "Greater savings"
           ]
         }
       }
