@@ -125,19 +125,24 @@ export const translations = {
     
     // Pricing Section
     pricing: {
-      title: "Basit, Güvenli ve Şeffaf Fiyatlandırma",
-      subtitle: "Anında erişim. Gizli ücret yok. Otomatik yenileme yok. Sadece istediğinizde tekrar satın alırsınız.",
+      title: "JustPeek ile anında erişim sağlayın.",
+      titleSub: "Gizli ücret yok. Otomatik yenileme yok.",
+      subtitle: "Tek ödeme yapın, hemen kullanmaya başlayın. Süre bitince yalnızca isterseniz tekrar satın alın.",
+      valueProposition: "JustPeek ile premium özelliklere anında erişim sağlayın ve kesintisiz kullanımın avantajını yaşayın.",
       popular: "EN POPÜLER",
-      purchase: "Satın Al",
+      popularSub: "Kullanıcıların en çok tercih ettiği plan",
+      purchase: "Hemen Başla",
+      purchaseSecondary: "Şimdi Aktif Et",
       loginToSee: "Fiyatı görmek için giriş yapın",
-      loginToPurchase: "Giriş Yap & Satın Al",
+      loginToPurchase: "Giriş Yap & Başla",
       faqTitle: "Sık Sorulan Sorular",
-      globalBanner: "Dünya genelinde binlerce kullanıcı JustPeek'i tercih ediyor.",
+      globalBanner: "JustPeek dünya genelinde aktif kullanıcılar tarafından tercih edilmektedir.",
+      globalBannerSub: "Güvenli ödeme ve anında erişim ile hemen başlayabilirsiniz.",
       trust: [
-        "Güvenli ödeme altyapısı",
-        "Anında aktivasyon",
-        "Otomatik ücretlendirme yok",
-        "7/24 destek"
+        "%100 Güvenli Ödeme",
+        "Anında Erişim",
+        "Otomatik Yenileme Yok",
+        "İstediğiniz Zaman Yeniden Satın Alın"
       ],
       faq: {
         q1: "Bu bir abonelik mi?",
@@ -164,20 +169,21 @@ export const translations = {
           name: "1 Aylık",
           duration: "30 Gün",
           tagline: "En çok tercih edilen plan",
-          bottomNote: "Kullanıcıların çoğu bu paketi tercih ediyor",
+          bottomNote: "Anında aktif olur – Ekstra ücret yok",
           features: [
             "Tüm Premium Özellikler",
             "30 Gün Kesintisiz Erişim",
             "Öncelikli Destek",
-            "En iyi fiyat/performans"
+            "En iyi fiyat/performans",
+            "En mantıklı seçim"
           ]
         },
         bimonthly: {
           name: "2 Aylık",
           duration: "60 Gün",
-          tagline: "Uzun süreli kullanım için en avantajlı seçenek",
+          tagline: "Daha uzun süre, daha avantajlı fiyat",
           saveBadge: "En Avantajlı Paket",
-          bottomNote: "Daha fazla süre, daha fazla tasarruf",
+          bottomNote: "Aylık plana göre daha ekonomik",
           features: [
             "Tüm Premium Özellikler",
             "60 Gün Tam Erişim",
@@ -427,19 +433,24 @@ export const translations = {
     
     // Pricing Section
     pricing: {
-      title: "Simple, Secure and Transparent Pricing",
-      subtitle: "Instant access. No hidden fees. No auto-renewal. You only purchase again when you want to.",
+      title: "Get instant access with JustPeek.",
+      titleSub: "No hidden fees. No auto-renewal.",
+      subtitle: "Make a single payment and start using immediately. When your period ends, you only repurchase if you want to.",
+      valueProposition: "Get instant access to premium features with JustPeek and enjoy the advantage of uninterrupted use.",
       popular: "MOST POPULAR",
-      purchase: "Purchase",
+      popularSub: "The most preferred plan by users",
+      purchase: "Get Started",
+      purchaseSecondary: "Activate Now",
       loginToSee: "Sign in to see price",
-      loginToPurchase: "Sign In & Purchase",
+      loginToPurchase: "Sign In & Start",
       faqTitle: "Frequently Asked Questions",
-      globalBanner: "Thousands of users worldwide choose JustPeek.",
+      globalBanner: "JustPeek is preferred by active users worldwide.",
+      globalBannerSub: "Start right away with secure payment and instant access.",
       trust: [
-        "Secure payment infrastructure",
-        "Instant activation",
-        "No auto-billing",
-        "24/7 support"
+        "100% Secure Payment",
+        "Instant Access",
+        "No Auto-Renewal",
+        "Repurchase Anytime You Want"
       ],
       faq: {
         q1: "Is this a subscription?",
@@ -466,20 +477,21 @@ export const translations = {
           name: "1 Month",
           duration: "30 Days",
           tagline: "The most preferred plan",
-          bottomNote: "Most users choose this plan",
+          bottomNote: "Activates instantly – No extra charge",
           features: [
             "All Premium Features",
             "30 Days Uninterrupted Access",
             "Priority Support",
-            "Best price/performance"
+            "Best price/performance",
+            "The smartest choice"
           ]
         },
         bimonthly: {
           name: "2 Months",
           duration: "60 Days",
-          tagline: "The best option for long-term use",
+          tagline: "Longer duration, better price",
           saveBadge: "Best Value Pack",
-          bottomNote: "More time, more savings",
+          bottomNote: "More economical than the monthly plan",
           features: [
             "All Premium Features",
             "60 Days Full Access",
