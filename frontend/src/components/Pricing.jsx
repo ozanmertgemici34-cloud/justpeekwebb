@@ -32,6 +32,7 @@ const Pricing = () => {
       duration: t('pricing.plans.monthly.duration'),
       icon: Crown,
       popular: true,
+      subBadge: language === 'tr' ? 'Sadece $0.23 / gün' : 'Only $0.23 / day',
       features: [
         t('pricing.plans.monthly.features.0'),
         t('pricing.plans.monthly.features.1'),
@@ -47,6 +48,7 @@ const Pricing = () => {
       duration: t('pricing.plans.bimonthly.duration'),
       icon: Crown,
       popular: false,
+      saveBadge: language === 'tr' ? '%10 tasarruf' : '10% savings',
       features: [
         t('pricing.plans.bimonthly.features.0'),
         t('pricing.plans.bimonthly.features.1'),
@@ -97,6 +99,12 @@ const Pricing = () => {
                   </div>
                 )}
 
+                {plan.saveBadge && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-green-600 to-green-700 text-white text-sm font-bold rounded-full">
+                    {plan.saveBadge}
+                  </div>
+                )}
+
                 <div className="text-center mb-6">
                   <div className={`inline-flex p-3 rounded-xl mb-4 ${
                     plan.popular ? 'bg-gradient-to-br from-red-600 to-red-700' : 'bg-gray-800'
@@ -109,6 +117,9 @@ const Pricing = () => {
                     <>
                       <div className="text-4xl font-bold text-red-500 mb-1" data-testid={`price-${plan.id}`}>{plan.price}</div>
                       <div className="text-gray-500 text-sm">{plan.duration}</div>
+                      {plan.subBadge && (
+                        <div className="text-xs text-green-400 font-semibold mt-1">{plan.subBadge}</div>
+                      )}
                     </>
                   ) : (
                     <div className="flex flex-col items-center gap-2 my-3">
