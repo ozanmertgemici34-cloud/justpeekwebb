@@ -25,31 +25,32 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    // Mock authentication - will be replaced with real API
-    setTimeout(() => {
-      const user = mockUsers.find(
-        u => u.email === formData.email && u.password === formData.password
-      );
+    try {
+      // Call real API
+      const response = await authAPI.login({
+        email: formData.email,
+        password: formData.password
+      });
 
-      if (user) {
-        login({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role
-        });
-        
-        // Redirect based on role
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/purchases');
-        }
+      // Save user data with token
+      const userData = {
+        ...response.user,
+        token: response.access_token
+      };
+
+      login(userData);
+      
+      // Redirect based on role
+      if (response.user.role === 'admin') {
+        navigate('/admin');
       } else {
-        setError(t('auth.login.error'));
+        navigate('/purchases');
       }
+    } catch (err) {
+      setError(err.response?.data?.detail || t('auth.login.error'));
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
