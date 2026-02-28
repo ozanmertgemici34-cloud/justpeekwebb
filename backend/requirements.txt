@@ -5,7 +5,7 @@ annotated-doc
 annotated-types
 anyio
 attrs
-bcrypt
+bcrypt==3.2.2
 black
 boto3
 botocore
