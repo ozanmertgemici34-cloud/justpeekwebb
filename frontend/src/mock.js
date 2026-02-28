@@ -90,4 +90,67 @@ export const mockEmails = [
   { id: 3, email: "user3@example.com", date: "2024-12-18", status: "active" }
 ];
 
+export const mockUsers = [
+  { 
+    id: 1, 
+    name: "Ozan Mert Gemici", 
+    email: "ozanmertgemici34@gmail.com", 
+    password: "ozan201223",
+    role: "admin",
+    registered: "2024-12-01", 
+    status: "active",
+    purchases: 5
+  },
+  { 
+    id: 2, 
+    name: "Test User", 
+    email: "test@example.com", 
+    password: "test123",
+    role: "user",
+    registered: "2024-12-15", 
+    status: "active",
+    purchases: 2
+  },
+  { 
+    id: 3, 
+    name: "Demo User", 
+    email: "demo@example.com", 
+    password: "demo123",
+    role: "user",
+    registered: "2024-12-20", 
+    status: "active",
+    purchases: 1
+  }
+];
+
+export const mockPurchases = [
+  {
+    id: 1,
+    userId: 2,
+    product: "JustPeek - 1 Month",
+    price: "$29.99",
+    date: "2024-12-20",
+    status: "active",
+    expiryDate: "2025-01-20"
+  },
+  {
+    id: 2,
+    userId: 2,
+    product: "JustPeek - 1 Week",
+    price: "$9.99",
+    date: "2024-12-10",
+    status: "expired",
+    expiryDate: "2024-12-17"
+  },
+  {
+    id: 3,
+    userId: 3,
+    product: "JustPeek - 1 Month",
+    price: "$29.99",
+    date: "2024-12-18",
+    status: "active",
+    expiryDate: "2025-01-18"
+  }
+];
+
 export const DISCORD_LINK = "https://discord.gg/Z2MdBahqcN";
