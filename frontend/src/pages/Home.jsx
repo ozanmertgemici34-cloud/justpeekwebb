@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import Features from '../components/Features';
 import Security from '../components/Security';
 import Testimonials from '../components/Testimonials';
+import Pricing from '../components/Pricing';
 import EmailCapture from '../components/EmailCapture';
 import Footer from '../components/Footer';
 import { useLanguage } from '../context/LanguageContext';
@@ -18,6 +19,7 @@ const Home = () => {
       <Features />
       <Security />
       <Testimonials language={language} />
+      <Pricing />
       <EmailCapture />
       <Footer />
     </div>
