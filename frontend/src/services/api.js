@@ -71,6 +71,19 @@ export const emailAPI = {
   },
 };
 
+// Purchase Request API
+export const purchaseRequestAPI = {
+  createRequest: async (data) => {
+    const response = await api.post('/purchase-requests', data);
+    return response.data;
+  },
+  
+  getUserRequests: async () => {
+    const response = await api.get('/purchase-requests');
+    return response.data;
+  },
+};
+
 // Admin API
 export const adminAPI = {
   getAllUsers: async () => {
@@ -100,6 +113,39 @@ export const adminAPI = {
   
   deleteEmail: async (emailId) => {
     const response = await api.delete(`/admin/emails/${emailId}`);
+    return response.data;
+  },
+  
+  getPurchaseRequests: async () => {
+    const response = await api.get('/admin/purchase-requests');
+    return response.data;
+  },
+  
+  updateRequestStatus: async (requestId, status) => {
+    const response = await api.put(`/admin/purchase-requests/${requestId}/status?status=${status}`);
+    return response.data;
+  },
+  
+  deleteRequest: async (requestId) => {
+    const response = await api.delete(`/admin/purchase-requests/${requestId}`);
+    return response.data;
+  },
+};
+
+// User Profile API
+export const userAPI = {
+  updateProfile: async (data) => {
+    const response = await api.put('/auth/profile', data);
+    return response.data;
+  },
+  
+  requestPasswordReset: async (email) => {
+    const response = await api.post('/auth/request-reset', { email });
+    return response.data;
+  },
+  
+  resetPassword: async (token, new_password) => {
+    const response = await api.post('/auth/reset-password', { token, new_password });
     return response.data;
   },
 };
