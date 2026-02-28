@@ -9,6 +9,7 @@ from pathlib import Path
 # Import routes
 from routes.auth_routes import router as auth_router
 from routes.purchase_routes import router as purchase_router
+from routes.purchase_request_routes import router as purchase_request_router
 from routes.email_routes import router as email_router
 from routes.admin_routes import router as admin_router
 
@@ -21,18 +22,19 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', 'justpeek_db')]
 
 # Create the main app
-app = FastAPI(title="JustPeek API", version="1.0.0")
+app = FastAPI(title="JustPeek API", version="2.0.0")
 
 # Include routers
 app.include_router(auth_router)
 app.include_router(purchase_router)
+app.include_router(purchase_request_router)
 app.include_router(email_router)
 app.include_router(admin_router)
 
 # Root endpoint
 @app.get("/api/")
 async def root():
-    return {"message": "JustPeek API is running", "version": "1.0.0"}
+    return {"message": "JustPeek API is running", "version": "2.0.0"}
 
 # Health check
 @app.get("/api/health")
@@ -58,12 +60,14 @@ logger = logging.getLogger(__name__)
 @app.on_event("startup")
 async def startup_event():
     """Create indexes and initial admin user on startup."""
-    logger.info("Starting up JustPeek API...")
+    logger.info("Starting up JustPeek API v2.0...")
     
     # Create indexes
     await db.users.create_index("email", unique=True)
     await db.emails.create_index("email", unique=True)
     await db.purchases.create_index("user_id")
+    await db.purchase_requests.create_index("user_id")
+    await db.purchase_requests.create_index("status")
     
     # Create initial admin user if not exists
     from auth_utils import get_password_hash
