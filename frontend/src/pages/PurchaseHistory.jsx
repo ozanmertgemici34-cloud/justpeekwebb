@@ -104,15 +104,13 @@ const PurchaseHistory = () => {
             <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-12 text-center">
               <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">{t('purchases.empty')}</h3>
-              <p className="text-gray-400 mb-6">{t('purchases.emptyDesc')}</p>
-              <a 
-                href="https://discord.gg/Z2MdBahqcN"
-                target="_blank"
-                rel="noopener noreferrer"
+              <p className="text-gray-400 mb-6">{language === 'tr' ? 'Satın alma talebi oluşturun!' : 'Create a purchase request!'}</p>
+              <Link
+                to="/purchase-request"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold hover:from-red-700 hover:to-red-800 transition-all hover:shadow-xl hover:shadow-red-600/30"
               >
-                {language === 'tr' ? 'Discord\'a Katıl' : 'Join Discord'}
-              </a>
+                {language === 'tr' ? 'Satın Alma Talebi Oluştur' : 'Create Purchase Request'}
+              </Link>
             </div>
           ) : (
             <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
