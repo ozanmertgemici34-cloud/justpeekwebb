@@ -1,9 +1,7 @@
-import "./App.css"; // Yol hatası almamak için @ işaretini standart yola çevirdik
+import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
-
-// Bilgisayarındaki pages klasöründeki dosyalarla tam uyumlu hale getirildi
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -19,7 +17,6 @@ function App() {
         <div className="App">
           <BrowserRouter>
             <Routes>
-              {/* Sayfaların element isimleri ve yolları doğru şekilde bağlandı */}
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
