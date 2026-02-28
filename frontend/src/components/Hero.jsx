@@ -1,9 +1,14 @@
 import React from 'react';
 import Logo from './Logo';
 import { ArrowRight, Shield, Ghost } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../translations';
 import { DISCORD_LINK } from '../mock';
 
 const Hero = () => {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, key);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -27,22 +32,21 @@ const Hero = () => {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/30 rounded-full mb-6 backdrop-blur-sm">
           <Ghost size={16} className="text-red-500" />
-          <span className="text-sm text-red-400 font-semibold">Görünmezliğin Gücü</span>
+          <span className="text-sm text-red-400 font-semibold">{t('hero.badge')}</span>
         </div>
 
         {/* Main Heading */}
         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-          <span className="text-white">JustPeek Internal</span>
+          <span className="text-white">{t('hero.title')}</span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-rose-600 animate-gradient">
-            Zaferin Adresi
+            {t('hero.subtitle')}
           </span>
         </h1>
 
         {/* Description */}
         <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Sadece bir yazılım değil; dijital bir gölge. Tespit edilemezlik üzerine inşa edilen bu özel yapı, 
-          sizi rekabetin en tepesine taşırken kimliğinizi saklı tutar.
+          {t('hero.description')}
         </p>
 
         {/* CTA Buttons */}
@@ -53,14 +57,14 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold text-lg hover:from-red-700 hover:to-red-800 transition-all hover:shadow-2xl hover:shadow-red-600/50 hover:scale-105 flex items-center gap-2"
           >
-            Hemen Satın Al
+            {t('hero.buyNow')}
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
           </a>
           <button 
             onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
             className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all hover:border-red-600/50"
           >
-            Özellikleri Keşfet
+            {t('hero.explore')}
           </button>
         </div>
 
@@ -68,18 +72,18 @@ const Hero = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-red-600/50 transition-all hover:bg-white/10">
             <Shield className="w-8 h-8 text-red-500 mb-3 mx-auto" />
-            <h3 className="text-white font-bold text-lg mb-2">Sıfır İz</h3>
-            <p className="text-gray-400 text-sm">Tespit edilemez gizlilik katmanı</p>
+            <h3 className="text-white font-bold text-lg mb-2">{t('hero.stats.zeroTrace')}</h3>
+            <p className="text-gray-400 text-sm">{t('hero.stats.zeroTraceDesc')}</p>
           </div>
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-red-600/50 transition-all hover:bg-white/10">
             <Ghost className="w-8 h-8 text-red-500 mb-3 mx-auto" />
-            <h3 className="text-white font-bold text-lg mb-2">Hayalet İmza</h3>
-            <p className="text-gray-400 text-sm">Anti-cheat sistemleri için görünmez</p>
+            <h3 className="text-white font-bold text-lg mb-2">{t('hero.stats.ghostSignature')}</h3>
+            <p className="text-gray-400 text-sm">{t('hero.stats.ghostSignatureDesc')}</p>
           </div>
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 hover:border-red-600/50 transition-all hover:bg-white/10">
             <div className="w-8 h-8 text-red-500 mb-3 mx-auto font-bold text-2xl">6+</div>
-            <h3 className="text-white font-bold text-lg mb-2">Özellik</h3>
-            <p className="text-gray-400 text-sm">Profesyonel cephanelik</p>
+            <h3 className="text-white font-bold text-lg mb-2">{t('hero.stats.features')}</h3>
+            <p className="text-gray-400 text-sm">{t('hero.stats.featuresDesc')}</p>
           </div>
         </div>
       </div>
