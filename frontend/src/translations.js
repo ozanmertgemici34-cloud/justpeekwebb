@@ -105,6 +105,51 @@ export const translations = {
       discordButton: "Discord'a Katıl"
     },
     
+    // Pricing Section
+    pricing: {
+      title: "Basit ve Şeffaf",
+      titleHighlight: "Fiyatlandırma",
+      subtitle: "Size en uygun paketi seçin ve hemen başlayın",
+      popular: "EN POPÜLER",
+      purchase: "Satın Al",
+      loginToSee: "Fiyatı görmek için giriş yapın",
+      loginToPurchase: "Giriş Yap & Satın Al",
+      plans: {
+        weekly: {
+          name: "Haftalık",
+          duration: "7 Gün",
+          features: [
+            "Tüm Premium Özellikler",
+            "24/7 Destek",
+            "Otomatik Güncellemeler",
+            "7 Günlük Erişim"
+          ]
+        },
+        monthly: {
+          name: "1 Aylık",
+          duration: "30 Gün",
+          features: [
+            "Tüm Premium Özellikler",
+            "24/7 Öncelikli Destek",
+            "Otomatik Güncellemeler",
+            "30 Günlük Erişim",
+            "En İyi Değer!"
+          ]
+        },
+        bimonthly: {
+          name: "2 Aylık",
+          duration: "60 Gün",
+          features: [
+            "Tüm Premium Özellikler",
+            "24/7 VIP Destek",
+            "Otomatik Güncellemeler",
+            "60 Günlük Erişim",
+            "Maksimum Tasarruf"
+          ]
+        }
+      }
+    },
+    
     // Footer
     footer: {
       description: "Görünmezliğin gücü, zaferin adresi. JustPeek ile oyunun kurallarını değiştir.",
@@ -322,6 +367,51 @@ export const translations = {
       error: "Please enter a valid email address",
       discordText: "Join our Discord server to purchase",
       discordButton: "Join Discord"
+    },
+    
+    // Pricing Section
+    pricing: {
+      title: "Simple and Transparent",
+      titleHighlight: "Pricing",
+      subtitle: "Choose the plan that suits you best and get started",
+      popular: "MOST POPULAR",
+      purchase: "Purchase",
+      loginToSee: "Sign in to see price",
+      loginToPurchase: "Sign In & Purchase",
+      plans: {
+        weekly: {
+          name: "Weekly",
+          duration: "7 Days",
+          features: [
+            "All Premium Features",
+            "24/7 Support",
+            "Auto Updates",
+            "7 Days Access"
+          ]
+        },
+        monthly: {
+          name: "1 Month",
+          duration: "30 Days",
+          features: [
+            "All Premium Features",
+            "24/7 Priority Support",
+            "Auto Updates",
+            "30 Days Access",
+            "Best Value!"
+          ]
+        },
+        bimonthly: {
+          name: "2 Months",
+          duration: "60 Days",
+          features: [
+            "All Premium Features",
+            "24/7 VIP Support",
+            "Auto Updates",
+            "60 Days Access",
+            "Maximum Savings"
+          ]
+        }
+      }
     },
     
     // Footer
