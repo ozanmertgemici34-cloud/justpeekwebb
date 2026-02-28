@@ -16,14 +16,12 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check localStorage for saved user
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       try {
         const userData = JSON.parse(savedUser);
         setUser(userData);
-        
-        // Verify token with backend (optional - don't logout on error)
+
         if (userData.token) {
           authAPI.getMe()
             .then((response) => {
@@ -31,13 +29,11 @@ export const AuthProvider = ({ children }) => {
               setUser(updatedUser);
               localStorage.setItem('user', JSON.stringify(updatedUser));
             })
-            .catch((error) => {
-              // Don't logout on verification error - token might still be valid
-              console.warn('Token verification failed, keeping user logged in:', error);
+            .catch(() => {
+              // Keep user logged in even if verification fails
             });
         }
       } catch (e) {
-        console.error('Error parsing user data:', e);
         localStorage.removeItem('user');
       }
     }
@@ -58,6 +54,14 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-red-600/30 border-t-red-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, logout, register, loading }}>
