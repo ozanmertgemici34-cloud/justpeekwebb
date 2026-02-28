@@ -46,7 +46,11 @@ async def update_purchase_request_status(
         raise HTTPException(status_code=400, detail="Invalid status")
     
     # Get request
-    request = await db.purchase_requests.find_one({"_id": ObjectId(request_id)})
+    try:
+        request = await db.purchase_requests.find_one({"_id": ObjectId(request_id)})
+    except:
+        raise HTTPException(status_code=400, detail="Invalid request ID")
+    
     if not request:
         raise HTTPException(status_code=404, detail="Request not found")
     
@@ -58,25 +62,28 @@ async def update_purchase_request_status(
     
     # If approved, create purchase and notify user
     if status == "approved" and request.get("user_id"):
-        user = await db.users.find_one({"_id": ObjectId(request["user_id"])})
-        if user:
-            # Create purchase
-            purchase_dict = {
-                "user_id": request["user_id"],
-                "product": request["product"],
-                "price": "$29.99",  # Default price, can be customized
-                "status": "active",
-                "purchased_at": datetime.utcnow(),
-                "expiry_date": datetime.utcnow() + timedelta(days=30)
-            }
-            await db.purchases.insert_one(purchase_dict)
-            
-            # Send confirmation email
-            await EmailService.send_purchase_confirmation(
-                user["email"],
-                user["name"],
-                request["product"]
-            )
+        try:
+            user = await db.users.find_one({"_id": ObjectId(request["user_id"])})
+            if user:
+                # Create purchase
+                purchase_dict = {
+                    "user_id": request["user_id"],
+                    "product": request["product"],
+                    "price": "$29.99",  # Default price, can be customized
+                    "status": "active",
+                    "purchased_at": datetime.utcnow(),
+                    "expiry_date": datetime.utcnow() + timedelta(days=30)
+                }
+                await db.purchases.insert_one(purchase_dict)
+                
+                # Send confirmation email
+                await EmailService.send_purchase_confirmation(
+                    user["email"],
+                    user["name"],
+                    request["product"]
+                )
+        except Exception as e:
+            print(f"Error creating purchase: {e}")
     
     return {"success": True, "message": f"Request {status}"}
 

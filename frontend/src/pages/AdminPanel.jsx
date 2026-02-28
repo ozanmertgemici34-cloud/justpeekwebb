@@ -160,6 +160,7 @@ const AdminPanel = () => {
                           <th className="text-left px-6 py-4 text-gray-400 font-semibold">Email</th>
                           <th className="text-left px-6 py-4 text-gray-400 font-semibold">Discord</th>
                           <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Ürün' : 'Product'}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Mesaj' : 'Message'}</th>
                           <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Durum' : 'Status'}</th>
                           <th className="text-right px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'İşlemler' : 'Actions'}</th>
                         </tr>
@@ -170,6 +171,9 @@ const AdminPanel = () => {
                             <td className="px-6 py-4 text-white">{req.email}</td>
                             <td className="px-6 py-4 text-gray-400">{req.discord_username}</td>
                             <td className="px-6 py-4 text-gray-400">{req.product}</td>
+                            <td className="px-6 py-4 text-gray-400 max-w-xs truncate" title={req.message || 'N/A'}>
+                              {req.message || '-'}
+                            </td>
                             <td className="px-6 py-4">
                               <span className={`inline-block px-3 py-1 rounded-full text-sm ${
                                 req.status === 'approved' ? 'bg-green-500/10 text-green-500' :
