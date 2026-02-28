@@ -1,5 +1,6 @@
 import React from 'react';
 
+// New Stealth-themed logo with eye and shadow motifs
 const Logo = ({ className = "", size = "md" }) => {
   const sizes = {
     sm: "h-8 w-8",
@@ -16,37 +17,60 @@ const Logo = ({ className = "", size = "md" }) => {
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Outer Ghost Shape */}
+        {/* Outer Shadow Circle */}
+        <circle cx="50" cy="50" r="45" fill="url(#shadowGradient)" opacity="0.3" />
+        
+        {/* Main Eye Shape */}
+        <ellipse cx="50" cy="50" rx="40" ry="25" fill="url(#eyeGradient)" />
+        
+        {/* Upper Eyelid Shadow */}
         <path 
-          d="M50 10 C30 10 20 20 20 40 L20 70 C20 75 22 78 25 78 C28 78 30 75 30 72 L30 68 C30 65 32 63 35 63 C38 63 40 65 40 68 L40 72 C40 75 42 78 45 78 C48 78 50 75 50 72 L50 68 C50 65 52 63 55 63 C58 63 60 65 60 68 L60 72 C60 75 62 78 65 78 C68 78 70 75 70 72 L70 68 C70 65 72 63 75 63 C78 63 80 65 80 68 L80 72 C80 75 82 78 85 78 C88 78 90 75 90 70 L90 40 C90 20 80 10 60 10 L50 10 Z" 
-          fill="url(#ghostGradient)"
-          className="drop-shadow-2xl"
+          d="M 10 50 Q 50 30, 90 50" 
+          fill="#000000" 
+          opacity="0.4"
         />
         
-        {/* Eye 1 - Peeking */}
-        <circle cx="38" cy="40" r="6" fill="#0a0a0a" />
-        <circle cx="40" cy="39" r="3" fill="#DC143C" className="animate-pulse" />
+        {/* Iris */}
+        <circle cx="50" cy="50" r="15" fill="url(#irisGradient)" />
         
-        {/* Eye 2 - Peeking */}
-        <circle cx="62" cy="40" r="6" fill="#0a0a0a" />
-        <circle cx="64" cy="39" r="3" fill="#DC143C" className="animate-pulse" />
+        {/* Pupil with Peek Effect */}
+        <ellipse cx="52" cy="50" rx="8" ry="10" fill="#0a0a0a" />
         
-        {/* Stealth Lines */}
-        <line x1="20" y1="35" x2="15" y2="35" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" />
-        <line x1="20" y1="45" x2="12" y2="45" stroke="#DC143C" strokeWidth="2" opacity="0.4" className="animate-pulse" />
-        <line x1="20" y1="55" x2="15" y2="55" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" />
+        {/* Highlight Glint */}
+        <circle cx="48" cy="46" r="3" fill="#FF6B6B" opacity="0.8" />
+        <circle cx="54" cy="48" r="2" fill="#FFFFFF" opacity="0.6" />
         
-        <line x1="80" y1="35" x2="85" y2="35" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" />
-        <line x1="80" y1="45" x2="88" y2="45" stroke="#DC143C" strokeWidth="2" opacity="0.4" className="animate-pulse" />
-        <line x1="80" y1="55" x2="85" y2="55" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" />
+        {/* Stealth Lines - Left */}
+        <line x1="5" y1="45" x2="10" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" />
+        <line x1="5" y1="50" x2="10" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.8" className="animate-pulse" style={{ animationDelay: '0.2s' }} />
+        <line x1="5" y1="55" x2="10" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" style={{ animationDelay: '0.4s' }} />
         
-        {/* Gradient Definition */}
+        {/* Stealth Lines - Right */}
+        <line x1="95" y1="45" x2="90" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" style={{ animationDelay: '0.1s' }} />
+        <line x1="95" y1="50" x2="90" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.8" className="animate-pulse" style={{ animationDelay: '0.3s' }} />
+        <line x1="95" y1="55" x2="90" y2="50" stroke="#DC143C" strokeWidth="2" opacity="0.6" className="animate-pulse" style={{ animationDelay: '0.5s' }} />
+        
+        {/* Bottom Shadow Effect */}
+        <ellipse cx="50" cy="75" rx="35" ry="8" fill="#DC143C" opacity="0.15" className="animate-pulse" />
+        
+        {/* Gradient Definitions */}
         <defs>
-          <linearGradient id="ghostGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#DC143C" />
-            <stop offset="50%" stopColor="#FF1744" />
-            <stop offset="100%" stopColor="#C62828" />
+          <linearGradient id="shadowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#1a1a1a" />
+            <stop offset="100%" stopColor="#0a0a0a" />
           </linearGradient>
+          
+          <linearGradient id="eyeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#2a2a2a" />
+            <stop offset="50%" stopColor="#1a1a1a" />
+            <stop offset="100%" stopColor="#0a0a0a" />
+          </linearGradient>
+          
+          <radialGradient id="irisGradient" cx="50%" cy="50%">
+            <stop offset="0%" stopColor="#FF1744" />
+            <stop offset="40%" stopColor="#DC143C" />
+            <stop offset="100%" stopColor="#8B0000" />
+          </radialGradient>
         </defs>
       </svg>
       
