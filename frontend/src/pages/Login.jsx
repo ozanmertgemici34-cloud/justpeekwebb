@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Shield, Mail, Lock, AlertCircle, CheckCircle } from 'lucide-react';
+import { Shield, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
+import { authAPI } from '../services/api';
 import { mockUsers } from '../mock';
 import Logo from '../components/Logo';
 

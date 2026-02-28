@@ -4,6 +4,7 @@ import { Shield, Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
+import { authAPI } from '../services/api';
 import Logo from '../components/Logo';
 
 const Register = () => {
@@ -33,19 +34,27 @@ const Register = () => {
 
     setLoading(true);
 
-    // Mock registration - will be replaced with real API
-    setTimeout(() => {
-      const newUser = {
-        id: Date.now(),
+    try {
+      // Call real API
+      const response = await authAPI.register({
         name: formData.name,
         email: formData.email,
-        role: 'user'
+        password: formData.password
+      });
+
+      // Save user data with token
+      const userData = {
+        ...response.user,
+        token: response.access_token
       };
 
-      register(newUser);
+      register(userData);
       navigate('/purchases');
+    } catch (err) {
+      setError(err.response?.data?.detail || t('auth.register.error'));
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
