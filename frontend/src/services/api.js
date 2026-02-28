@@ -48,12 +48,12 @@ export const authAPI = {
 // Purchase API
 export const purchaseAPI = {
   getUserPurchases: async () => {
-    const response = await api.get('/purchases');
+    const response = await api.get('/purchases/');
     return response.data;
   },
   
   createPurchase: async (data) => {
-    const response = await api.post('/purchases', data);
+    const response = await api.post('/purchases/', data);
     return response.data;
   },
 };
@@ -61,12 +61,12 @@ export const purchaseAPI = {
 // Email API
 export const emailAPI = {
   saveEmail: async (email) => {
-    const response = await api.post('/emails', { email });
+    const response = await api.post('/emails/', { email });
     return response.data;
   },
   
   getAllEmails: async () => {
-    const response = await api.get('/emails');
+    const response = await api.get('/emails/');
     return response.data;
   },
 };
@@ -74,12 +74,12 @@ export const emailAPI = {
 // Purchase Request API
 export const purchaseRequestAPI = {
   createRequest: async (data) => {
-    const response = await api.post('/purchase-requests', data);
+    const response = await api.post('/purchase-requests/', data);
     return response.data;
   },
   
   getUserRequests: async () => {
-    const response = await api.get('/purchase-requests');
+    const response = await api.get('/purchase-requests/');
     return response.data;
   },
 };
