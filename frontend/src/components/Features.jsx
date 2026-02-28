@@ -1,6 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Target, Eye, Zap, Crosshair, Users, Ghost, Sparkles } from 'lucide-react';
 import { features } from '../mock';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../translations';
 
 const iconMap = {
   Target: Target,
@@ -12,6 +15,9 @@ const iconMap = {
 };
 
 const Features = () => {
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, key);
+  
   return (
     <section id="features" className="relative py-24 bg-gradient-to-b from-black to-gray-900">
       {/* Background Effects */}

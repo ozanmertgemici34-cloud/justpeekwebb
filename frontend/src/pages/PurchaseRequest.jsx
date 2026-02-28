@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ShoppingBag, Mail, MessageCircle, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { ShoppingBag, Mail, MessageCircle, Send, CheckCircle, AlertCircle, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { purchaseRequestAPI } from '../services/api';
@@ -25,22 +25,25 @@ const PurchaseRequest = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate('/login');
+      // Show login required message instead of redirect
+      setStatus('login-required');
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!user) {
+      setStatus('login-required');
+      return;
+    }
+    
     setError('');
     setLoading(true);
 
     try {
       await purchaseRequestAPI.createRequest(formData);
       setStatus('success');
-      
-      setTimeout(() => {
-        navigate('/purchases');
-      }, 2000);
     } catch (err) {
       setStatus('error');
       setError(err.response?.data?.detail || 'Error creating request');
@@ -49,8 +52,6 @@ const PurchaseRequest = () => {
     }
   };
 
-  if (!user) return null;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <Navbar />
@@ -58,7 +59,36 @@ const PurchaseRequest = () => {
       <div className="pt-32 pb-24 px-6">
         <div className="max-w-2xl mx-auto">
           <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-8 shadow-2xl">
-            {status === 'success' ? (
+            {status === 'login-required' ? (
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-600 to-yellow-700 rounded-full mb-4">
+                  <LogIn className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  {language === 'tr' ? 'Kayıt Gerekli' : 'Registration Required'}
+                </h2>
+                <p className="text-gray-400 mb-8 text-lg">
+                  {language === 'tr' 
+                    ? 'Satın alma talebi oluşturmak için önce kayıt olmanız gerekmektedir.'
+                    : 'You need to register first to create a purchase request.'}
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link 
+                    to="/register"
+                    className="px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold hover:from-red-700 hover:to-red-800 transition-all hover:shadow-xl hover:shadow-red-600/30 hover:scale-105"
+                  >
+                    {language === 'tr' ? 'Kayıt Ol' : 'Register'}
+                  </Link>
+                  <Link 
+                    to="/login"
+                    className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl font-bold hover:bg-white/10 transition-all hover:border-red-600/50"
+                  >
+                    {language === 'tr' ? 'Giriş Yap' : 'Login'}
+                  </Link>
+                </div>
+              </div>
+            ) : status === 'success' ? (
               <div className="text-center py-12">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h2 className="text-3xl font-bold text-white mb-4">
