@@ -73,13 +73,21 @@ const Navbar = () => {
             {user ? (
               <>
                 {user.role !== 'admin' && (
-                  <Link 
-                    to="/purchases"
-                    className="text-gray-300 hover:text-red-500 transition-colors font-medium flex items-center gap-2"
-                  >
-                    <ShoppingBag size={18} />
-                    {t('nav.purchases')}
-                  </Link>
+                  <>
+                    <Link 
+                      to="/purchases"
+                      className="text-gray-300 hover:text-red-500 transition-colors font-medium flex items-center gap-2"
+                    >
+                      <ShoppingBag size={18} />
+                      {t('nav.purchases')}
+                    </Link>
+                    <Link 
+                      to="/purchase-request"
+                      className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all hover:shadow-xl hover:shadow-red-600/30 hover:scale-105"
+                    >
+                      {language === 'tr' ? 'Satın Al' : 'Buy Now'}
+                    </Link>
+                  </>
                 )}
                 
                 {user.role === 'admin' && (
@@ -101,7 +109,15 @@ const Navbar = () => {
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50">
+                      <Link
+                        to="/profile"
+                        className="w-full flex items-center gap-2 px-4 py-3 text-gray-300 hover:bg-red-600/10 hover:text-red-500 transition-colors"
+                        onClick={() => setUserMenuOpen(false)}
+                      >
+                        <User size={18} />
+                        {language === 'tr' ? 'Profil' : 'Profile'}
+                      </Link>
                       <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-2 px-4 py-3 text-gray-300 hover:bg-red-600/10 hover:text-red-500 transition-colors"
