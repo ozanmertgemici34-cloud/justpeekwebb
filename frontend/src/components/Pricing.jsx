@@ -43,7 +43,7 @@ const Pricing = () => {
     {
       id: 'bimonthly',
       name: t('pricing.plans.bimonthly.name'),
-      price: '$6.99',
+      price: '$11.99',
       duration: t('pricing.plans.bimonthly.duration'),
       icon: Crown,
       popular: false,
