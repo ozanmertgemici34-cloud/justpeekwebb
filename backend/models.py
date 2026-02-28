@@ -19,13 +19,21 @@ class UserResponse(UserBase):
     status: str = "active"
     created_at: datetime
     purchases_count: int = 0
+    discord_username: Optional[str] = None
 
     class Config:
         from_attributes = True
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
-    status: Optional[str] = None
+    discord_username: Optional[str] = None
+
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+class PasswordReset(BaseModel):
+    token: str
+    new_password: str
 
 class PurchaseBase(BaseModel):
     product: str
@@ -41,6 +49,26 @@ class PurchaseResponse(PurchaseBase):
     status: str
     purchased_at: datetime
     expiry_date: datetime
+
+    class Config:
+        from_attributes = True
+
+class PurchaseRequestCreate(BaseModel):
+    email: EmailStr
+    discord_username: str
+    product: str
+    message: Optional[str] = None
+
+class PurchaseRequestResponse(BaseModel):
+    id: str
+    user_id: Optional[str] = None
+    email: EmailStr
+    discord_username: str
+    product: str
+    message: Optional[str] = None
+    status: str  # pending, approved, rejected
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True
@@ -68,5 +96,13 @@ class AdminStats(BaseModel):
     banned_users: int
     total_emails: int
     total_purchases: int
+    pending_purchase_requests: int
     today_registrations: int
     total_revenue: str
+    revenue_this_month: str
+    new_users_this_week: int
+
+class MessageResponse(BaseModel):
+    success: bool
+    message: str
+
