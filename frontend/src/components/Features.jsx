@@ -1,17 +1,16 @@
 import React from 'react';
-import { Target, Eye, Zap, Crosshair, Users, Ghost, Sparkles } from 'lucide-react';
+import { Target, Eye, Zap, Crosshair, Users, Sparkles } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
-const featureKeys = ['aimbot', 'esp', 'triggerbot', 'rcs', 'spectator', 'stealth'];
-const iconMap = [Target, Eye, Zap, Crosshair, Users, Ghost];
+const featureKeys = ['aimbot', 'esp', 'triggerbot', 'rcs', 'spectator'];
+const iconMap = [Target, Eye, Zap, Crosshair, Users];
 const gradients = [
   'from-red-600 to-rose-600',
   'from-rose-600 to-pink-600',
   'from-red-700 to-red-600',
   'from-red-600 to-orange-600',
-  'from-rose-600 to-red-600',
-  'from-red-800 to-red-600'
+  'from-rose-600 to-red-600'
 ];
 
 const Features = () => {
@@ -50,7 +49,6 @@ const Features = () => {
                 key={key}
                 data-testid={`feature-card-${key}`}
                 className="group relative bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-8 hover:border-red-600/50 transition-all duration-300 hover:shadow-2xl hover:shadow-red-600/20 hover:-translate-y-2"
-                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index]} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
                 
@@ -73,9 +71,12 @@ const Features = () => {
           })}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-6 text-lg">
+        <div className="mt-20 text-center">
+          <h3 className="text-3xl font-bold text-white mb-4">
             {t('features.cta')}
+          </h3>
+          <p className="text-gray-400 mb-8 text-lg max-w-xl mx-auto">
+            {t('features.ctaDesc')}
           </p>
           <a 
             href="https://discord.gg/Z2MdBahqcN"

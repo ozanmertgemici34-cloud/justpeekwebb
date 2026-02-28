@@ -34,10 +34,11 @@ export const translations = {
     // Features Section
     features: {
       badge: "Ana Cephanelik",
-      title: "Profesyonel",
-      titleHighlight: "Özellikler",
+      title: "Ana",
+      titleHighlight: "Cephaneliğiniz",
       subtitle: "Oyunun kurallarını değiştiren, rakipsiz yetenekler",
-      cta: "Tüm özellikleri deneyimlemek için hemen aramıza katıl",
+      cta: "JustPeek ile Kontrol Artık Sende",
+      ctaDesc: "Sadece en iyilerin kullandığı en gizli silah. Aramıza katıl ve efsaneni yazmaya başla.",
       items: {
         aimbot: {
           title: "Kusursuz Aimbot & Hedef Takibi",
@@ -58,30 +59,47 @@ export const translations = {
         spectator: {
           title: "Farkındalık Paneli (Spectator List)",
           desc: "Sizi izleyenlerin adını ekranda görün. Kimin gördüğünü bildiğinizde, her zaman güvenli tarafta kalırsınız."
+        }
+      }
+    },
+
+    // Why Premium Section
+    whyPremium: {
+      badge: "Neden JustPeek?",
+      title: "Neden JustPeek",
+      titleHighlight: "Premium?",
+      items: {
+        plugPlay: {
+          title: "Tak Çalıştır",
+          desc: "Karmaşık ayarlar ve dosyalarla uğraşmayın. Saniyeler içinde oyuna hükmetmeye hazırsınız."
         },
-        stealth: {
-          title: "Efsanevi Stealth Koruması",
-          desc: "Sıfır iz, dijital kamuflaj ve tam gizlilik. En derin taramalarda bile görünmez kalarak size en güvenli oyun deneyimini sunar."
+        performance: {
+          title: "Maksimum Performans",
+          desc: "Oyun motoruyla tam entegre çalışarak FPS kaybınızı sıfıra indirir."
+        },
+        ui: {
+          title: "Modern Arayüz",
+          desc: "Şık tasarımı ve kullanım kolaylığıyla, ayarlarınızı yapmak hiç bu kadar keyifli olmamıştı."
         }
       }
     },
     
-    // Security Section
+    // Security Section (JustShield™)
     security: {
-      badge: "Hayalet İmza",
-      title: "Efsanevi",
-      titleHighlight: "Stealth",
-      titleEnd: "Koruması",
-      description: "Güvenlik bizim için bir özellik değil, bir temeldir. JustPeek, rakipsiz bir gizlilik katmanıyla donatılmıştır. Biz ona",
-      ghostSignature: "Hayalet İmza",
+      badge: "JustShield™",
+      title: "Aşılmaz",
+      titleHighlight: "Koruma",
+      titleEnd: "Sistemi",
+      description: "Güvenlik bizim için bir seçenek değil, bir lütuftur. JustPeek, sektörün en güvenilir ve en sofistike koruma katmanı olan JustShield™ ile donatılmıştır. Biz ona",
+      ghostSignature: "Görünmez Zırh",
       descriptionEnd: "diyoruz.",
       features: {
-        zeroTrace: "Sıfır İz",
-        zeroTraceDesc: "Sisteminizde veya oyun dosyalarınızda asla kalıcı bir iz bırakmaz.",
-        digitalCamo: "Dijital Kamuflaj",
-        digitalCamoDesc: "Gelişmiş şifreleme ve gizleme yöntemlerimiz sayesinde, varlığımız anti-cheat sistemleri için bir bilmeceden ibarettir.",
-        fullPrivacy: "Tam Gizlilik",
-        fullPrivacyDesc: "En derin taramalarda bile görünmez kalarak, size en güvenli oyun deneyimini sunar."
+        zeroTrace: "Zero-Trace Engine",
+        zeroTraceDesc: "Sisteminizde veya oyun dosyalarınızda hiçbir dijital ayak izi bırakmaz. Her aktivasyon sonrası JustShield™ kendini imha ederek varlığını tamamen gizler.",
+        digitalCamo: "Phantom Access",
+        digitalCamoDesc: "Geleneksel yöntemlerin aksine, sistemimiz oyunun en derin noktalarına \"hayalet\" bir modül olarak yerleşir. Anti-cheat sistemleri için burası tamamen boş ve güvenli bir alan gibi görünür.",
+        fullPrivacy: "Aktif Tehdit Koruması",
+        fullPrivacyDesc: "En gelişmiş taramalar ve analizler JustShield™'in dinamik yapısı karşısında etkisiz kalır. Hesabınızın ve emeğinizin %100 güvende kalması en büyük önceliğimizdir."
       },
       stats: {
         privacy: "Gizlilik",
@@ -152,7 +170,7 @@ export const translations = {
     
     // Footer
     footer: {
-      description: "Görünmezliğin gücü, zaferin adresi. JustPeek ile oyunun kurallarını değiştir.",
+      description: "Görünmezliğin gücü, zaferin adresi. JustPeek ile kontrol artık sende.",
       quickLinks: "Hızlı Erişim",
       contact: "İletişim",
       discordServer: "Discord Sunucusu",
@@ -298,10 +316,11 @@ export const translations = {
     // Features Section
     features: {
       badge: "Main Arsenal",
-      title: "Professional",
-      titleHighlight: "Features",
+      title: "Your Main",
+      titleHighlight: "Arsenal",
       subtitle: "Game-changing, unmatched capabilities",
-      cta: "Join us now to experience all features",
+      cta: "Take Control with JustPeek",
+      ctaDesc: "The most secret weapon used only by the best. Join us and start writing your legend.",
       items: {
         aimbot: {
           title: "Perfect Aimbot & Target Tracking",
@@ -322,30 +341,47 @@ export const translations = {
         spectator: {
           title: "Awareness Panel (Spectator List)",
           desc: "See the names of those watching you on screen. When you know who's watching, you always stay safe."
+        }
+      }
+    },
+
+    // Why Premium Section
+    whyPremium: {
+      badge: "Why JustPeek?",
+      title: "Why JustPeek",
+      titleHighlight: "Premium?",
+      items: {
+        plugPlay: {
+          title: "Plug & Play",
+          desc: "No complex settings or files. You're ready to dominate the game in seconds."
         },
-        stealth: {
-          title: "Legendary Stealth Protection",
-          desc: "Zero trace, digital camouflage, and full privacy. Offering you the safest gaming experience, remaining invisible even in the deepest scans."
+        performance: {
+          title: "Maximum Performance",
+          desc: "Fully integrated with the game engine, reducing your FPS loss to zero."
+        },
+        ui: {
+          title: "Modern Interface",
+          desc: "With its sleek design and ease of use, tweaking your settings has never been this enjoyable."
         }
       }
     },
     
-    // Security Section
+    // Security Section (JustShield™)
     security: {
-      badge: "Ghost Signature",
-      title: "Legendary",
-      titleHighlight: "Stealth",
-      titleEnd: "Protection",
-      description: "Security is not a feature for us; it's a foundation. JustPeek is equipped with an unmatched privacy layer. We call it",
-      ghostSignature: "Ghost Signature",
+      badge: "JustShield™",
+      title: "Impenetrable",
+      titleHighlight: "Protection",
+      titleEnd: "System",
+      description: "Security is not an option for us; it's a grace. JustPeek is equipped with JustShield™, the industry's most reliable and sophisticated protection layer. We call it",
+      ghostSignature: "Invisible Armor",
       descriptionEnd: ".",
       features: {
-        zeroTrace: "Zero Trace",
-        zeroTraceDesc: "Never leaves a permanent trace on your system or game files.",
-        digitalCamo: "Digital Camouflage",
-        digitalCamoDesc: "Thanks to our advanced encryption and concealment methods, our presence is a puzzle for anti-cheat systems.",
-        fullPrivacy: "Full Privacy",
-        fullPrivacyDesc: "Offers you the safest gaming experience, remaining invisible even in the deepest scans."
+        zeroTrace: "Zero-Trace Engine",
+        zeroTraceDesc: "Leaves no digital footprint on your system or game files. After each activation, JustShield™ self-destructs to completely conceal its existence.",
+        digitalCamo: "Phantom Access",
+        digitalCamoDesc: "Unlike traditional methods, our system embeds itself as a \"ghost\" module into the deepest points of the game. Anti-cheat systems see this as a completely empty and safe area.",
+        fullPrivacy: "Active Threat Protection",
+        fullPrivacyDesc: "The most advanced scans and analyses become ineffective against JustShield™'s dynamic structure. Keeping your account and effort 100% safe is our top priority."
       },
       stats: {
         privacy: "Privacy",
@@ -416,7 +452,7 @@ export const translations = {
     
     // Footer
     footer: {
-      description: "The power of invisibility, victory destination. Change the game's rules with JustPeek.",
+      description: "The power of invisibility, victory destination. Take control with JustPeek.",
       quickLinks: "Quick Links",
       contact: "Contact",
       discordServer: "Discord Server",
