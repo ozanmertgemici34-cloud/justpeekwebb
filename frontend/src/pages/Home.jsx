@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
+import WhyPremium from '../components/WhyPremium';
 import Security from '../components/Security';
 import Testimonials from '../components/Testimonials';
 import Pricing from '../components/Pricing';
@@ -17,6 +18,7 @@ const Home = () => {
       <Navbar />
       <Hero />
       <Features />
+      <WhyPremium />
       <Security />
       <Testimonials language={language} />
       <Pricing />
