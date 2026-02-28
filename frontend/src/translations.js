@@ -125,44 +125,68 @@ export const translations = {
     
     // Pricing Section
     pricing: {
-      title: "Basit ve Şeffaf",
-      titleHighlight: "Fiyatlandırma",
-      subtitle: "Size en uygun paketi seçin ve hemen başlayın",
+      title: "Basit, Güvenli ve Şeffaf Fiyatlandırma",
+      subtitle: "Anında erişim. Gizli ücret yok. Otomatik yenileme yok. Sadece istediğinizde tekrar satın alırsınız.",
       popular: "EN POPÜLER",
       purchase: "Satın Al",
       loginToSee: "Fiyatı görmek için giriş yapın",
       loginToPurchase: "Giriş Yap & Satın Al",
+      faqTitle: "Sık Sorulan Sorular",
+      globalBanner: "Dünya genelinde binlerce kullanıcı JustPeek'i tercih ediyor.",
+      trust: [
+        "Güvenli ödeme altyapısı",
+        "Anında aktivasyon",
+        "Otomatik ücretlendirme yok",
+        "7/24 destek"
+      ],
+      faq: {
+        q1: "Bu bir abonelik mi?",
+        a1: "Hayır. Otomatik yenileme yoktur. Süre bitince sadece isterseniz tekrar satın alırsınız.",
+        q2: "Erişim ne zaman başlar?",
+        a2: "Ödeme sonrası anında aktif olur.",
+        q3: "İstediğim zaman tekrar satın alabilir miyim?",
+        a3: "Evet. Hesabınız pasif olsa bile dilediğiniz zaman yeniden aktif edebilirsiniz."
+      },
       plans: {
         weekly: {
           name: "Haftalık",
           duration: "7 Gün",
+          tagline: "Kısa süreli kullanım için ideal",
+          bottomNote: "Anında aktif olur",
           features: [
             "Tüm Premium Özellikler",
-            "24/7 Destek",
-            "Otomatik Güncellemeler",
-            "7 Günlük Erişim"
+            "7 Gün Tam Erişim",
+            "7/24 Destek",
+            "Hızlı ve risksiz deneme"
           ]
         },
         monthly: {
           name: "1 Aylık",
           duration: "30 Gün",
+          tagline: "En çok tercih edilen plan",
+          bottomNote: "Kullanıcıların çoğu bu paketi tercih ediyor",
           features: [
             "Tüm Premium Özellikler",
-            "24/7 Öncelikli Destek",
-            "Otomatik Güncellemeler",
-            "30 Günlük Erişim",
-            "En İyi Değer!"
+            "30 Gün Kesintisiz Erişim",
+            "Öncelikli Destek",
+            "En iyi fiyat/performans"
           ]
         },
         bimonthly: {
           name: "2 Aylık",
           duration: "60 Gün",
+          tagline: "Uzun süreli kullanım için en avantajlı seçenek",
+          saveBadge: "En Avantajlı Paket",
+          bottomNote: "Daha fazla süre, daha fazla tasarruf",
           features: [
             "Tüm Premium Özellikler",
-            "24/7 VIP Destek",
-            "Otomatik Güncellemeler",
-            "60 Günlük Erişim",
-            "Maksimum Tasarruf"
+            "60 Gün Tam Erişim",
+            "VIP Öncelikli Destek",
+            "Daha fazla tasarruf"
+          ]
+        }
+      }
+    },
           ]
         }
       }
