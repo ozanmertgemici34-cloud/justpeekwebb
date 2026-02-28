@@ -1,211 +1,272 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Calendar, Trash2, AlertCircle, CheckCircle, Shield } from 'lucide-react';
-import { mockEmails } from '../mock';
+import { useNavigate } from 'react-router-dom';
+import { Users, Mail, ShoppingBag, BarChart3, Ban, Trash2, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../translations';
+import { adminAPI, emailAPI } from '../services/api';
+import Navbar from '../components/Navbar';
 
 const AdminPanel = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, key);
+
+  const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState(null);
+  const [users, setUsers] = useState([]);
   const [emails, setEmails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authError, setAuthError] = useState('');
 
-  // Simple authentication (will be replaced with real backend auth)
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (password === 'admin123') {
-      setIsAuthenticated(true);
-      setAuthError('');
-      loadEmails();
+  // Redirect if not admin
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    } else if (user.role !== 'admin') {
+      navigate('/');
     } else {
-      setAuthError('Hatalı şifre!');
+      loadData();
     }
-  };
+  }, [user, navigate]);
 
-  const loadEmails = () => {
+  const loadData = async () => {
     setLoading(true);
-    // Mock data - will be replaced with actual API call
-    setTimeout(() => {
-      setEmails(mockEmails);
+    try {
+      const [statsData, usersData, emailsData] = await Promise.all([
+        adminAPI.getStats(),
+        adminAPI.getAllUsers(),
+        emailAPI.getAllEmails()
+      ]);
+      setStats(statsData);
+      setUsers(usersData);
+      setEmails(emailsData);
+    } catch (error) {
+      console.error('Error loading admin data:', error);
+    } finally {
       setLoading(false);
-    }, 1000);
-  };
-
-  const handleDelete = (id) => {
-    if (window.confirm('Bu e-postayı silmek istediğinizden emin misiniz?')) {
-      setEmails(emails.filter(email => email.id !== id));
-      // Here we'll add actual API call to delete from database
     }
   };
 
-  const exportEmails = () => {
-    const emailList = emails.map(e => e.email).join('\n');
-    const blob = new Blob([emailList], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'emails.txt';
-    a.click();
+  const handleBanUser = async (userId, currentStatus) => {
+    if (!window.confirm(t('admin.users.confirmBan'))) return;
+    
+    try {
+      if (currentStatus === 'banned') {
+        await adminAPI.unbanUser(userId);
+      } else {
+        await adminAPI.banUser(userId);
+      }
+      await loadData();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error updating user');
+    }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center px-6">
-        <div className="max-w-md w-full bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-8 shadow-2xl">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-full mb-4">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-3xl font-bold text-white mb-2">Admin Paneli</h2>
-            <p className="text-gray-400">Giriş yapmak için şifrenizi girin</p>
-          </div>
+  const handleDeleteUser = async (userId) => {
+    if (!window.confirm(t('admin.users.confirmDelete'))) return;
+    
+    try {
+      await adminAPI.deleteUser(userId);
+      await loadData();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error deleting user');
+    }
+  };
 
-          <form onSubmit={handleLogin}>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Şifre"
-              className="w-full px-4 py-3 bg-gray-900/50 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all mb-4"
-            />
-            
-            {authError && (
-              <div className="mb-4 flex items-center gap-2 text-red-500 bg-red-500/10 border border-red-500/30 rounded-lg p-3 text-sm">
-                <AlertCircle size={16} />
-                <span>{authError}</span>
-              </div>
-            )}
+  const handleDeleteEmail = async (emailId) => {
+    if (!window.confirm('Delete this email?')) return;
+    
+    try {
+      await adminAPI.deleteEmail(emailId);
+      await loadData();
+    } catch (error) {
+      alert(error.response?.data?.detail || 'Error deleting email');
+    }
+  };
 
-            <button
-              type="submit"
-              className="w-full px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold hover:from-red-700 hover:to-red-800 transition-all hover:shadow-xl hover:shadow-red-600/30"
-            >
-              Giriş Yap
-            </button>
-          </form>
-
-          <p className="text-center text-gray-500 text-sm mt-6">
-            Demo şifre: <code className="text-red-500">admin123</code>
-          </p>
-        </div>
-      </div>
-    );
-  }
+  if (!user || user.role !== 'admin') return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-4xl font-bold text-white mb-2">E-posta Yönetimi</h1>
-              <p className="text-gray-400">Toplanan e-posta adreslerini görüntüleyin ve yönetin</p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+      <Navbar />
+      
+      <div className="pt-32 pb-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
             <button
-              onClick={() => {
-                setIsAuthenticated(false);
-                setPassword('');
-              }}
-              className="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-all"
+              onClick={() => navigate('/')}
+              className="flex items-center gap-2 text-gray-400 hover:text-red-500 transition-colors mb-6"
             >
-              Çıkış Yap
+              <ArrowLeft size={20} />
+              {language === 'tr' ? 'Ana Sayfaya Dön' : 'Back to Home'}
             </button>
+            
+            <h1 className="text-4xl font-bold text-white mb-2">{t('admin.title')}</h1>
+            <p className="text-gray-400">{t('admin.subtitle')}</p>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6">
-              <Mail className="w-8 h-8 text-red-500 mb-2" />
-              <div className="text-3xl font-bold text-white mb-1">{emails.length}</div>
-              <div className="text-gray-400 text-sm">Toplam E-posta</div>
-            </div>
-            <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6">
-              <CheckCircle className="w-8 h-8 text-green-500 mb-2" />
-              <div className="text-3xl font-bold text-white mb-1">{emails.filter(e => e.status === 'active').length}</div>
-              <div className="text-gray-400 text-sm">Aktif</div>
-            </div>
-            <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6">
-              <Calendar className="w-8 h-8 text-blue-500 mb-2" />
-              <div className="text-3xl font-bold text-white mb-1">
-                {emails.length > 0 ? new Date(emails[0].date).toLocaleDateString('tr-TR') : '-'}
-              </div>
-              <div className="text-gray-400 text-sm">Son Kayıt</div>
-            </div>
+          {/* Tabs */}
+          <div className="flex gap-4 mb-8 border-b border-gray-800">
+            {['overview', 'users', 'emails'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3 font-semibold transition-all ${
+                  activeTab === tab
+                    ? 'text-red-500 border-b-2 border-red-500'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {t(`admin.tabs.${tab}`)}
+              </button>
+            ))}
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="mb-6 flex items-center justify-between">
-          <button
-            onClick={loadEmails}
-            className="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-all"
-          >
-            Yenile
-          </button>
-          <button
-            onClick={exportEmails}
-            className="px-6 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition-all"
-          >
-            E-postaları Dışa Aktar
-          </button>
-        </div>
-
-        {/* Email List */}
-        <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
           {loading ? (
-            <div className="p-12 text-center">
+            <div className="text-center py-12">
               <div className="w-12 h-12 border-4 border-red-600/30 border-t-red-600 rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-400">Yükleniyor...</p>
-            </div>
-          ) : emails.length === 0 ? (
-            <div className="p-12 text-center">
-              <Mail className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400">Henüz e-posta kaydı yok</p>
+              <p className="text-gray-400">Loading...</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-900/50 border-b border-gray-800">
-                  <tr>
-                    <th className="text-left px-6 py-4 text-gray-400 font-semibold">E-posta</th>
-                    <th className="text-left px-6 py-4 text-gray-400 font-semibold">Tarih</th>
-                    <th className="text-left px-6 py-4 text-gray-400 font-semibold">Durum</th>
-                    <th className="text-right px-6 py-4 text-gray-400 font-semibold">İşlem</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {emails.map((email) => (
-                    <tr key={email.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
-                      <td className="px-6 py-4 text-white font-medium">{email.email}</td>
-                      <td className="px-6 py-4 text-gray-400">
-                        {new Date(email.date).toLocaleDateString('tr-TR', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-500/10 border border-green-500/30 rounded-full text-green-500 text-sm">
-                          <CheckCircle size={14} />
-                          {email.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button
-                          onClick={() => handleDelete(email.id)}
-                          className="text-red-500 hover:text-red-400 transition-colors p-2 hover:bg-red-500/10 rounded-lg"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <>
+              {/* Overview Tab */}
+              {activeTab === 'overview' && stats && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <StatCard icon={<Users />} label={t('admin.stats.totalUsers')} value={stats.total_users} color="blue" />
+                  <StatCard icon={<CheckCircle />} label={t('admin.stats.activeUsers')} value={stats.active_users} color="green" />
+                  <StatCard icon={<Mail />} label={t('admin.stats.totalEmails')} value={stats.total_emails} color="purple" />
+                  <StatCard icon={<ShoppingBag />} label={t('admin.stats.totalRevenue')} value={stats.total_revenue} color="red" />
+                  <StatCard icon={<Ban />} label={language === 'tr' ? 'Yasaklı Kullanıcı' : 'Banned Users'} value={stats.banned_users} color="red" />
+                  <StatCard icon={<BarChart3 />} label={t('admin.stats.todayRegistrations')} value={stats.today_registrations} color="green" />
+                </div>
+              )}
+
+              {/* Users Tab */}
+              {activeTab === 'users' && (
+                <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-gray-900/50 border-b border-gray-800">
+                        <tr>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{t('admin.users.columns.name')}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{t('admin.users.columns.email')}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Rol' : 'Role'}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{t('admin.users.columns.status')}</th>
+                          <th className="text-right px-6 py-4 text-gray-400 font-semibold">{t('admin.users.columns.actions')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {users.map((user) => (
+                          <tr key={user.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
+                            <td className="px-6 py-4 text-white">{user.name}</td>
+                            <td className="px-6 py-4 text-gray-400">{user.email}</td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                                user.role === 'admin' ? 'bg-purple-500/10 text-purple-500' : 'bg-blue-500/10 text-blue-500'
+                              }`}>
+                                {user.role}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-block px-3 py-1 rounded-full text-sm ${
+                                user.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
+                              }`}>
+                                {user.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                {user.role !== 'admin' && (
+                                  <>
+                                    <button
+                                      onClick={() => handleBanUser(user.id, user.status)}
+                                      className={`p-2 rounded-lg transition-colors ${
+                                        user.status === 'banned'
+                                          ? 'text-green-500 hover:bg-green-500/10'
+                                          : 'text-yellow-500 hover:bg-yellow-500/10'
+                                      }`}
+                                      title={user.status === 'banned' ? t('admin.users.actions.unban') : t('admin.users.actions.ban')}
+                                    >
+                                      <Ban size={18} />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteUser(user.id)}
+                                      className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                      title={t('admin.users.actions.delete')}
+                                    >
+                                      <Trash2 size={18} />
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Emails Tab */}
+              {activeTab === 'emails' && (
+                <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-gray-900/50 border-b border-gray-800">
+                        <tr>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{t('admin.emails.columns.email')}</th>
+                          <th className="text-left px-6 py-4 text-gray-400 font-semibold">{t('admin.emails.columns.date')}</th>
+                          <th className="text-right px-6 py-4 text-gray-400 font-semibold">{t('admin.emails.columns.actions')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {emails.map((email) => (
+                          <tr key={email.id} className="border-b border-gray-800/50 hover:bg-gray-900/30 transition-colors">
+                            <td className="px-6 py-4 text-white">{email.email}</td>
+                            <td className="px-6 py-4 text-gray-400">
+                              {new Date(email.created_at).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US')}
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <button
+                                onClick={() => handleDeleteEmail(email.id)}
+                                className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
+    </div>
+  );
+};
+
+const StatCard = ({ icon, label, value, color }) => {
+  const colorClasses = {
+    blue: 'from-blue-600 to-blue-700',
+    green: 'from-green-600 to-green-700',
+    purple: 'from-purple-600 to-purple-700',
+    red: 'from-red-600 to-red-700',
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-xl p-6 hover:border-red-600/50 transition-all">
+      <div className={`inline-flex p-3 bg-gradient-to-br ${colorClasses[color]} rounded-lg mb-4`}>
+        {React.cloneElement(icon, { className: 'w-6 h-6 text-white' })}
+      </div>
+      <div className="text-3xl font-bold text-white mb-1">{value}</div>
+      <div className="text-gray-400 text-sm">{label}</div>
     </div>
   );
 };
