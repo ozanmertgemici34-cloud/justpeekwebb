@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { Mail, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
+import { getTranslation } from '../translations';
+import { emailAPI } from '../services/api';
 
 const EmailCapture = () => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
   const [message, setMessage] = useState('');
+  const { language } = useLanguage();
+  const t = (key) => getTranslation(language, key);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,16 +18,16 @@ const EmailCapture = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setStatus('error');
-      setMessage('Lütfen geçerli bir e-posta adresi girin');
+      setMessage(t('contact.error'));
       return;
     }
 
     setStatus('loading');
 
-    // Mock API call - will be replaced with actual backend
-    setTimeout(() => {
+    try {
+      await emailAPI.saveEmail(email);
       setStatus('success');
-      setMessage('Başarıyla kaydedildi! En kısa sürede sizinle iletişime geçeceğiz.');
+      setMessage(t('contact.success'));
       setEmail('');
       
       // Reset after 5 seconds
@@ -30,7 +35,15 @@ const EmailCapture = () => {
         setStatus('idle');
         setMessage('');
       }, 5000);
-    }, 1000);
+    } catch (error) {
+      setStatus('error');
+      setMessage(error.response?.data?.detail || t('contact.error'));
+      
+      setTimeout(() => {
+        setStatus('idle');
+        setMessage('');
+      }, 5000);
+    }
   };
 
   return (

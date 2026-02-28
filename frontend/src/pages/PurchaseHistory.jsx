@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Calendar, DollarSign, CheckCircle, XCircle, Clock, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
-import { mockPurchases } from '../mock';
+import { purchaseAPI } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -13,18 +13,33 @@ const PurchaseHistory = () => {
   const { user } = useAuth();
   const { language } = useLanguage();
   const t = (key) => getTranslation(language, key);
+  
+  const [purchases, setPurchases] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Redirect if not logged in
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user) {
       navigate('/login');
+    } else {
+      loadPurchases();
     }
   }, [user, navigate]);
 
+  const loadPurchases = async () => {
+    try {
+      const data = await purchaseAPI.getUserPurchases();
+      setPurchases(data);
+    } catch (error) {
+      console.error('Error loading purchases:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!user) return null;
 
-  // Filter purchases for current user
-  const userPurchases = mockPurchases.filter(p => p.userId === user.id);
+  const userPurchases = purchases;
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -80,7 +95,12 @@ const PurchaseHistory = () => {
           </div>
 
           {/* Purchases List */}
-          {userPurchases.length === 0 ? (
+          {loading ? (
+            <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-12 text-center">
+              <div className="w-12 h-12 border-4 border-red-600/30 border-t-red-600 rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-400">{language === 'tr' ? 'Yükleniyor...' : 'Loading...'}</p>
+            </div>
+          ) : userPurchases.length === 0 ? (
             <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl p-12 text-center">
               <ShoppingBag className="w-16 h-16 text-gray-600 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">{t('purchases.empty')}</h3>
@@ -123,7 +143,7 @@ const PurchaseHistory = () => {
                         <td className="px-6 py-4 text-gray-400">
                           <div className="flex items-center gap-2">
                             <Calendar size={16} />
-                            {new Date(purchase.date).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+                            {new Date(purchase.purchased_at).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric'
@@ -143,7 +163,7 @@ const PurchaseHistory = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-gray-400">
-                          {new Date(purchase.expiryDate).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+                          {new Date(purchase.expiry_date).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
