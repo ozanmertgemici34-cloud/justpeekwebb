@@ -36,9 +36,19 @@ async def create_purchase_request(
     result = await db.purchase_requests.insert_one(request_dict)
     request_dict["_id"] = result.inserted_id
     
-    # Send notification to admin
+    # Send in-app notification to admin
     admin = await db.users.find_one({"role": "admin"})
     if admin:
+        admin_notification = {
+            "user_id": str(admin["_id"]),
+            "title": "Yeni Satın Alma Talebi!",
+            "message": f"{request_data.email} ({request_data.discord_username}) - {request_data.product}",
+            "type": "info",
+            "read": False,
+            "created_at": datetime.utcnow()
+        }
+        await db.notifications.insert_one(admin_notification)
+
         await EmailService.send_purchase_request_notification(
             admin["email"],
             request_dict

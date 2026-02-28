@@ -71,7 +71,7 @@ const Navbar = () => {
 
             <LanguageSwitcher />
 
-            {user && user.role !== 'admin' && <NotificationBell />}
+            {user && <NotificationBell />}
 
             {user ? (
               <>
