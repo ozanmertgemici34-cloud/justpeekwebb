@@ -38,7 +38,8 @@ const Hero = () => {
 
         {/* Main Heading */}
         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-          <span className="text-white">{t('hero.title')}</span>
+          <span className="text-white">Just</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Peek</span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-rose-600 animate-gradient">
             {t('hero.subtitle')}
