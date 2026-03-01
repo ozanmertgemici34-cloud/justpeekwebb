@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Mail, ShoppingBag, BarChart3, Ban, Trash2, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Users, Mail, ShoppingBag, BarChart3, Ban, Trash2, CheckCircle, AlertCircle, ArrowLeft, Search, Calendar, XCircle, PackageCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 import { adminAPI, emailAPI } from '../services/api';
 import Navbar from '../components/Navbar';
+import AdminCharts from '../components/AdminCharts';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ const AdminPanel = () => {
   const [requests, setRequests] = useState([]);
   const [selectedRequests, setSelectedRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [analytics, setAnalytics] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -34,16 +37,18 @@ const AdminPanel = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsData, usersData, emailsData, requestsData] = await Promise.all([
+      const [statsData, usersData, emailsData, requestsData, analyticsData] = await Promise.all([
         adminAPI.getStats(),
         adminAPI.getAllUsers(),
         emailAPI.getAllEmails(),
-        adminAPI.getPurchaseRequests()
+        adminAPI.getPurchaseRequests(),
+        adminAPI.getAnalytics().catch(() => null)
       ]);
       setStats(statsData);
       setUsers(usersData);
       setEmails(emailsData);
       setRequests(requestsData);
+      setAnalytics(analyticsData);
     } catch (error) {
       console.error('Error loading admin data:', error);
     } finally {
@@ -158,6 +163,17 @@ const AdminPanel = () => {
     }
   };
 
+  const handleSearch = async (e) => {
+    e?.preventDefault();
+    try {
+      const data = await adminAPI.getPurchaseRequests(searchQuery);
+      setRequests(data);
+      setSelectedRequests([]);
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  };
+
   if (!user || user.role !== 'admin') return null;
 
   return (
@@ -210,21 +226,58 @@ const AdminPanel = () => {
             <>
               {/* Overview Tab */}
               {activeTab === 'overview' && stats && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" data-testid="admin-overview">
-                  <StatCard icon={<Users />} label={t('admin.stats.totalUsers')} value={stats.total_users} color="blue" />
-                  <StatCard icon={<CheckCircle />} label={t('admin.stats.activeUsers')} value={stats.active_users} color="green" />
-                  <StatCard icon={<Mail />} label={t('admin.stats.totalEmails')} value={stats.total_emails} color="purple" />
-                  <StatCard icon={<ShoppingBag />} label={t('admin.stats.totalRevenue')} value={stats.total_revenue} color="red" />
-                  <StatCard icon={<Ban />} label={language === 'tr' ? 'Yasaklı Kullanıcı' : 'Banned Users'} value={stats.banned_users} color="red" />
-                  <StatCard icon={<BarChart3 />} label={t('admin.stats.todayRegistrations')} value={stats.today_registrations} color="green" />
-                  <StatCard icon={<ShoppingBag />} label={language === 'tr' ? 'Bekleyen Talepler' : 'Pending Requests'} value={stats.pending_purchase_requests} color="yellow" />
-                  <StatCard icon={<Users />} label={language === 'tr' ? 'Bu Hafta Yeni' : 'New This Week'} value={stats.new_users_this_week} color="blue" />
+                <div data-testid="admin-overview">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <StatCard icon={<Users />} label={t('admin.stats.totalUsers')} value={stats.total_users} color="blue" />
+                    <StatCard icon={<CheckCircle />} label={t('admin.stats.activeUsers')} value={stats.active_users} color="green" />
+                    <StatCard icon={<ShoppingBag />} label={t('admin.stats.totalRevenue')} value={stats.total_revenue} color="red" />
+                    <StatCard icon={<ShoppingBag />} label={language === 'tr' ? 'Bu Ay Gelir' : 'Revenue This Month'} value={stats.revenue_this_month} color="green" />
+                    <StatCard icon={<AlertCircle />} label={language === 'tr' ? 'Bekleyen Talepler' : 'Pending Requests'} value={stats.pending_purchase_requests} color="yellow" />
+                    <StatCard icon={<PackageCheck />} label={language === 'tr' ? 'Onaylanan Talepler' : 'Approved Requests'} value={stats.approved_requests || 0} color="blue" />
+                    <StatCard icon={<CheckCircle />} label={language === 'tr' ? 'Tamamlanan' : 'Completed'} value={stats.completed_requests || 0} color="green" />
+                    <StatCard icon={<BarChart3 />} label={language === 'tr' ? 'Bu Hafta Yeni Kullanıcı' : 'New Users This Week'} value={stats.new_users_this_week} color="blue" />
+                  </div>
+                  <AdminCharts analytics={analytics} language={language} />
                 </div>
               )}
 
               {/* Purchase Requests Tab */}
               {activeTab === 'requests' && (
                 <div data-testid="admin-requests-tab">
+                  {/* Search Bar */}
+                  <form onSubmit={handleSearch} className="mb-4">
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                        <input
+                          type="text"
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          placeholder={language === 'tr' ? 'Sipariş no, email veya Discord ile ara...' : 'Search by order number, email or Discord...'}
+                          data-testid="search-requests-input"
+                          className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        data-testid="search-requests-btn"
+                        className="px-6 py-3 bg-red-600 text-white rounded-xl font-semibold hover:bg-red-700 transition-colors"
+                      >
+                        {language === 'tr' ? 'Ara' : 'Search'}
+                      </button>
+                      {searchQuery && (
+                        <button
+                          type="button"
+                          onClick={() => { setSearchQuery(''); adminAPI.getPurchaseRequests('').then(setRequests); }}
+                          data-testid="clear-search-btn"
+                          className="px-4 py-3 bg-gray-700 text-white rounded-xl hover:bg-gray-600 transition-colors"
+                        >
+                          {language === 'tr' ? 'Temizle' : 'Clear'}
+                        </button>
+                      )}
+                    </div>
+                  </form>
+
                   {/* Bulk Actions */}
                   {requests.length > 0 && (
                     <div className="mb-4 flex items-center justify-between bg-gray-900 border border-gray-800 rounded-xl p-4">
@@ -269,10 +322,11 @@ const AdminPanel = () => {
                         <thead className="bg-gray-900/50 border-b border-gray-800">
                           <tr>
                             <th className="text-left px-6 py-4 text-gray-400 font-semibold w-12"></th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Sipariş No' : 'Order No'}</th>
                             <th className="text-left px-6 py-4 text-gray-400 font-semibold">Email</th>
                             <th className="text-left px-6 py-4 text-gray-400 font-semibold">Discord</th>
                             <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Ürün' : 'Product'}</th>
-                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Mesaj' : 'Message'}</th>
+                            <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Tarih' : 'Date'}</th>
                             <th className="text-left px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'Durum' : 'Status'}</th>
                             <th className="text-right px-6 py-4 text-gray-400 font-semibold">{language === 'tr' ? 'İşlemler' : 'Actions'}</th>
                           </tr>
@@ -280,7 +334,7 @@ const AdminPanel = () => {
                         <tbody>
                           {requests.length === 0 ? (
                             <tr>
-                              <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                              <td colSpan="8" className="px-6 py-12 text-center text-gray-500">
                                 {language === 'tr' ? 'Henüz talep yok' : 'No requests yet'}
                               </td>
                             </tr>
@@ -295,25 +349,39 @@ const AdminPanel = () => {
                                     className="w-4 h-4 rounded border-gray-700 bg-gray-800 text-red-600 focus:ring-red-600"
                                   />
                                 </td>
+                                <td className="px-6 py-4">
+                                  <span data-testid={`order-number-${req.id}`} className="font-mono text-red-400 font-semibold text-sm bg-red-500/10 px-2 py-1 rounded">
+                                    {req.order_number || 'N/A'}
+                                  </span>
+                                </td>
                                 <td className="px-6 py-4 text-white">{req.email}</td>
                                 <td className="px-6 py-4 text-gray-400">{req.discord_username}</td>
                                 <td className="px-6 py-4 text-gray-400">{req.product}</td>
-                                <td className="px-6 py-4 text-gray-400 max-w-xs truncate" title={req.message || ''}>
-                                  {req.message || '-'}
+                                <td className="px-6 py-4 text-gray-400 text-sm">
+                                  <div className="flex items-center gap-1.5">
+                                    <Calendar size={14} />
+                                    {new Date(req.created_at).toLocaleDateString(language === 'tr' ? 'tr-TR' : 'en-US', {
+                                      day: 'numeric', month: 'short', year: 'numeric'
+                                    })}
+                                  </div>
                                 </td>
                                 <td className="px-6 py-4">
                                   <span className={`inline-block px-3 py-1 rounded-full text-sm ${
-                                    req.status === 'approved' ? 'bg-green-500/10 text-green-500' :
+                                    req.status === 'completed' ? 'bg-green-500/10 text-green-500' :
+                                    req.status === 'approved' ? 'bg-blue-500/10 text-blue-500' :
                                     req.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
+                                    req.status === 'cancelled' ? 'bg-gray-500/10 text-gray-400' :
                                     'bg-yellow-500/10 text-yellow-500'
                                   }`}>
-                                    {req.status === 'approved' ? (language === 'tr' ? 'Onaylandı' : 'Approved') :
+                                    {req.status === 'completed' ? (language === 'tr' ? 'Tamamlandı' : 'Completed') :
+                                     req.status === 'approved' ? (language === 'tr' ? 'Onaylandı' : 'Approved') :
                                      req.status === 'rejected' ? (language === 'tr' ? 'Reddedildi' : 'Rejected') :
+                                     req.status === 'cancelled' ? (language === 'tr' ? 'İptal' : 'Cancelled') :
                                      (language === 'tr' ? 'Beklemede' : 'Pending')}
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                  <div className="flex items-center justify-end gap-2">
+                                  <div className="flex items-center justify-end gap-1">
                                     {req.status === 'pending' && (
                                       <>
                                         <button
@@ -331,6 +399,28 @@ const AdminPanel = () => {
                                           title={language === 'tr' ? 'Reddet' : 'Reject'}
                                         >
                                           <Ban size={18} />
+                                        </button>
+                                      </>
+                                    )}
+                                    {req.status === 'approved' && (
+                                      <>
+                                        <button
+                                          onClick={() => handleRequestAction(req.id, 'completed')}
+                                          data-testid={`complete-request-${req.id}`}
+                                          className="p-1.5 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors text-xs font-semibold border border-green-500/30 flex items-center gap-1"
+                                          title={language === 'tr' ? 'Tamamlandı' : 'Complete'}
+                                        >
+                                          <PackageCheck size={14} />
+                                          <span>{language === 'tr' ? 'Tamamla' : 'Complete'}</span>
+                                        </button>
+                                        <button
+                                          onClick={() => handleRequestAction(req.id, 'cancelled')}
+                                          data-testid={`cancel-request-${req.id}`}
+                                          className="p-1.5 text-yellow-500 hover:bg-yellow-500/10 rounded-lg transition-colors text-xs font-semibold border border-yellow-500/30 flex items-center gap-1"
+                                          title={language === 'tr' ? 'İptal Et' : 'Cancel'}
+                                        >
+                                          <XCircle size={14} />
+                                          <span>{language === 'tr' ? 'İptal' : 'Cancel'}</span>
                                         </button>
                                       </>
                                     )}

@@ -54,13 +54,14 @@ const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Link
-            to="/purchase-request"
+          <button
+            onClick={() => document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' })}
+            data-testid="hero-pricing-btn"
             className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold text-lg hover:from-red-700 hover:to-red-800 transition-all hover:shadow-2xl hover:shadow-red-600/50 hover:scale-105 flex items-center gap-2"
           >
-            {t('hero.buyNow')}
+            {language === 'tr' ? 'Fiyatları Gör' : 'See Pricing'}
             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+          </button>
           <button 
             onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
             className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-xl font-bold text-lg hover:bg-white/10 transition-all hover:border-red-600/50"

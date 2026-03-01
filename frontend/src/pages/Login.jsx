@@ -100,9 +100,14 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                {t('auth.login.password')}
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-gray-300">
+                  {t('auth.login.password')}
+                </label>
+                <Link to="/forgot-password" data-testid="forgot-password-link" className="text-xs text-red-500 hover:text-red-400 transition-colors">
+                  {language === 'tr' ? 'Şifremi Unuttum' : 'Forgot Password?'}
+                </Link>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
                 <input

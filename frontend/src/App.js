@@ -9,6 +9,8 @@ import PurchaseHistory from "./pages/PurchaseHistory";
 import PurchaseRequest from "./pages/PurchaseRequest";
 import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
               <Route path="/purchase-request" element={<PurchaseRequest />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Routes>
           </BrowserRouter>
         </div>

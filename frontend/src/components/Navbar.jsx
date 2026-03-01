@@ -62,6 +62,9 @@ const Navbar = () => {
             <button onClick={() => scrollToSection('features')} className="text-gray-300 hover:text-red-500 transition-colors font-medium">
               {t('nav.features')}
             </button>
+            <button onClick={() => scrollToSection('pricing')} data-testid="nav-pricing-link" className="text-gray-300 hover:text-red-500 transition-colors font-medium">
+              {language === 'tr' ? 'Fiyatlandırma' : 'Pricing'}
+            </button>
             <button onClick={() => scrollToSection('security')} className="text-gray-300 hover:text-red-500 transition-colors font-medium">
               {t('nav.security')}
             </button>
@@ -173,6 +176,9 @@ const Navbar = () => {
           <div className="lg:hidden mt-4 pb-4 border-t border-red-900/20 pt-4 space-y-3">
             <button onClick={() => scrollToSection('features')} className="block w-full text-left text-gray-300 hover:text-red-500 transition-colors font-medium py-2">
               {t('nav.features')}
+            </button>
+            <button onClick={() => scrollToSection('pricing')} data-testid="nav-pricing-link-mobile" className="block w-full text-left text-gray-300 hover:text-red-500 transition-colors font-medium py-2">
+              {language === 'tr' ? 'Fiyatlandırma' : 'Pricing'}
             </button>
             <button onClick={() => scrollToSection('security')} className="block w-full text-left text-gray-300 hover:text-red-500 transition-colors font-medium py-2">
               {t('nav.security')}

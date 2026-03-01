@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, Check, X, CheckCheck } from 'lucide-react';
+import { Bell, Check, X, CheckCheck, Trash2 } from 'lucide-react';
 import { notificationAPI } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -7,6 +7,7 @@ const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const { language } = useLanguage();
 
   const loadNotifications = async () => {
@@ -57,6 +58,18 @@ const NotificationBell = () => {
     }
   };
 
+  const handleDeleteAll = async () => {
+    setDeleteLoading(true);
+    try {
+      await notificationAPI.deleteAll();
+      await loadNotifications();
+    } catch (error) {
+      console.error('Error deleting all notifications:', error);
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
   const getNotificationColor = (type) => {
     switch (type) {
       case 'success': return 'border-green-500/30 bg-green-500/10';
@@ -89,15 +102,29 @@ const NotificationBell = () => {
               <h3 className="text-white font-bold">
                 {language === 'tr' ? 'Bildirimler' : 'Notifications'} ({unreadCount})
               </h3>
-              {unreadCount > 0 && (
-                <button
-                  onClick={handleMarkAllAsRead}
-                  disabled={loading}
-                  className="text-xs text-red-500 hover:text-red-400 flex items-center gap-1"
-                >
-                  <CheckCheck size={14} />
-                  {language === 'tr' ? 'Tümünü Okundu İşaretle' : 'Mark All Read'}
-                </button>
+              {notifications.length > 0 && (
+                <div className="flex items-center gap-2">
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={handleMarkAllAsRead}
+                      disabled={loading}
+                      data-testid="mark-all-read-btn"
+                      className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-500/10 transition-colors"
+                    >
+                      <CheckCheck size={14} />
+                      {language === 'tr' ? 'Okundu' : 'Read All'}
+                    </button>
+                  )}
+                  <button
+                    onClick={handleDeleteAll}
+                    disabled={deleteLoading}
+                    data-testid="delete-all-notifications-btn"
+                    className="text-xs text-red-500 hover:text-red-400 flex items-center gap-1 px-2 py-1 rounded hover:bg-red-500/10 transition-colors"
+                  >
+                    <Trash2 size={14} />
+                    {language === 'tr' ? 'Tümünü Sil' : 'Delete All'}
+                  </button>
+                </div>
               )}
             </div>
 

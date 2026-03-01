@@ -111,13 +111,19 @@ export const adminAPI = {
     return response.data;
   },
   
+  getAnalytics: async () => {
+    const response = await api.get('/admin/analytics');
+    return response.data;
+  },
+  
   deleteEmail: async (emailId) => {
     const response = await api.delete(`/admin/emails/${emailId}`);
     return response.data;
   },
   
-  getPurchaseRequests: async () => {
-    const response = await api.get('/admin/purchase-requests');
+  getPurchaseRequests: async (search = '') => {
+    const params = search ? `?search=${encodeURIComponent(search)}` : '';
+    const response = await api.get(`/admin/purchase-requests${params}`);
     return response.data;
   },
   
@@ -139,6 +145,14 @@ export const userAPI = {
     return response.data;
   },
   
+  changePassword: async (currentPassword, newPassword) => {
+    const response = await api.put('/auth/change-password', {
+      current_password: currentPassword,
+      new_password: newPassword
+    });
+    return response.data;
+  },
+
   requestPasswordReset: async (email) => {
     const response = await api.post('/auth/request-reset', { email });
     return response.data;
@@ -169,6 +183,11 @@ export const notificationAPI = {
   
   markAllAsRead: async () => {
     const response = await api.post('/notifications/mark-all-read');
+    return response.data;
+  },
+
+  deleteAll: async () => {
+    const response = await api.delete('/notifications/delete-all');
     return response.data;
   },
 };

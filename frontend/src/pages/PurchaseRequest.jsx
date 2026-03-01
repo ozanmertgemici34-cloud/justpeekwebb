@@ -22,10 +22,10 @@ const PurchaseRequest = () => {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
 
   useEffect(() => {
     if (!user) {
-      // Show login required message instead of redirect
       setStatus('login-required');
     }
   }, [user]);
@@ -42,7 +42,8 @@ const PurchaseRequest = () => {
     setLoading(true);
 
     try {
-      await purchaseRequestAPI.createRequest(formData);
+      const result = await purchaseRequestAPI.createRequest(formData);
+      setOrderNumber(result.order_number);
       setStatus('success');
     } catch (err) {
       setStatus('error');
@@ -94,6 +95,15 @@ const PurchaseRequest = () => {
                 <h2 className="text-3xl font-bold text-white mb-4">
                   {language === 'tr' ? 'Talebiniz Başarıyla Oluşturuldu!' : 'Request Successfully Created!'}
                 </h2>
+                
+                {/* Order Number Display */}
+                {orderNumber && (
+                  <div data-testid="order-number-display" className="inline-flex items-center gap-3 bg-gray-800 border border-gray-700 rounded-xl px-6 py-4 mb-6">
+                    <span className="text-gray-400 text-sm">{language === 'tr' ? 'Sipariş Numaranız:' : 'Your Order Number:'}</span>
+                    <span className="font-mono text-red-400 font-bold text-lg">{orderNumber}</span>
+                  </div>
+                )}
+                
                 <p className="text-gray-400 mb-8">
                   {language === 'tr' 
                     ? 'Satın alma talebiniz başarıyla oluşturuldu. Devam etmek için Discord sunucumuza katılın.'
