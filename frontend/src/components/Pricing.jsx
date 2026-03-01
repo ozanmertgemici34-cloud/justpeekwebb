@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Check, Lock, Zap, Crown, Shield, ChevronDown, ChevronUp, Globe } from 'lucide-react';
+import BrandText from './BrandText';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
