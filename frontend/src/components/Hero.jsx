@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
+import BrandText from './BrandText';
 import { ArrowRight, Shield, Ghost } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
@@ -48,7 +49,7 @@ const Hero = () => {
 
         {/* Description */}
         <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-          {t('hero.description')}
+          <BrandText text={t('hero.description')} />
         </p>
 
         {/* CTA Buttons */}
