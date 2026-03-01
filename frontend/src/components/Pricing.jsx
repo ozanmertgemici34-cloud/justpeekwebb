@@ -268,7 +268,7 @@ const Pricing = () => {
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-gray-900 to-black border border-gray-800 rounded-full">
             <Globe className="w-5 h-5 text-red-500" />
-            <span className="text-gray-300 text-sm font-medium">{t('pricing.globalBanner')}</span>
+            <span className="text-gray-300 text-sm font-medium"><BrandText text={t('pricing.globalBanner')} /></span>
           </div>
           <p className="text-gray-500 text-xs">{t('pricing.globalBannerSub')}</p>
         </div>
