@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 import { emailAPI } from '../services/api';
