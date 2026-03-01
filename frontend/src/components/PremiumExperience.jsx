@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gauge, Monitor, Layout, Diamond } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -25,7 +26,7 @@ const PremiumExperience = () => {
             {t('premiumExperience.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-violet-500">{t('premiumExperience.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t('premiumExperience.description')}</p>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto"><BrandText text={t('premiumExperience.description')} /></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {itemKeys.map((key, i) => {

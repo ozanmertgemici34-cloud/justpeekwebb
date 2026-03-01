@@ -58,7 +58,7 @@ const EmailCapture = () => {
             </h2>
             
             <p className="text-gray-400 text-lg">
-              {t('contact.description')}
+              <BrandText text={t('contact.description')} />
             </p>
           </div>
 

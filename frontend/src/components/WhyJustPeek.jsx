@@ -1,5 +1,6 @@
 import React from 'react';
 import { Zap, Cpu, Shield } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -26,8 +27,8 @@ const WhyJustPeek = () => {
             {t('whyJustPeek.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">{t('whyJustPeek.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-4">{t('whyJustPeek.description')}</p>
-          <p className="text-white font-semibold text-lg">{t('whyJustPeek.descriptionBold')}</p>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-4"><BrandText text={t('whyJustPeek.description')} /></p>
+          <p className="text-white font-semibold text-lg"><BrandText text={t('whyJustPeek.descriptionBold')} /></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {itemKeys.map((key, i) => {

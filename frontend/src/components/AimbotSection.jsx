@@ -1,5 +1,6 @@
 import React from 'react';
 import { Target, Crosshair, MousePointer } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -26,7 +27,7 @@ const AimbotSection = () => {
             {t('aimbot.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">{t('aimbot.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t('aimbot.description')}</p>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto"><BrandText text={t('aimbot.description')} /></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {itemKeys.map((key, i) => {
@@ -37,7 +38,7 @@ const AimbotSection = () => {
                   <Icon className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors">{t(`aimbot.items.${key}.title`)}</h3>
-                <p className="text-gray-400 leading-relaxed text-sm">{t(`aimbot.items.${key}.desc`)}</p>
+                <p className="text-gray-400 leading-relaxed text-sm"><BrandText text={t(`aimbot.items.${key}.desc`)} /></p>
               </div>
             );
           })}

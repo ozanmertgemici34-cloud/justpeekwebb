@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck, Bug, FileWarning, EyeOff } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -25,7 +26,7 @@ const TrustGuarantee = () => {
             {t('trustGuarantee.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">{t('trustGuarantee.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto">{t('trustGuarantee.description')}</p>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto"><BrandText text={t('trustGuarantee.description')} /></p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {itemKeys.map((key, i) => {
@@ -36,7 +37,7 @@ const TrustGuarantee = () => {
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2 group-hover:text-green-400 transition-colors">{t(`trustGuarantee.items.${key}.title`)}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{t(`trustGuarantee.items.${key}.desc`)}</p>
+                <p className="text-gray-400 text-sm leading-relaxed"><BrandText text={t(`trustGuarantee.items.${key}.desc`)} /></p>
               </div>
             );
           })}

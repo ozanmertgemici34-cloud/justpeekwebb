@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Lock, EyeOff, CheckCircle, Fingerprint, Ghost, ShieldAlert, Bug } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -30,7 +31,7 @@ const Security = () => {
             {t('security.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-500 to-red-600">{t('security.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">{t('security.description')}</p>
+          <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed"><BrandText text={t('security.description')} /></p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
@@ -40,7 +41,7 @@ const Security = () => {
                 <Icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-lg font-bold text-white mb-2 group-hover:text-red-400 transition-colors">{t(`security.features.${key}`)}</h3>
-              <p className="text-gray-400 leading-relaxed text-sm">{t(`security.features.${key}Desc`)}</p>
+              <p className="text-gray-400 leading-relaxed text-sm"><BrandText text={t(`security.features.${key}Desc`)} /></p>
             </div>
           ))}
         </div>

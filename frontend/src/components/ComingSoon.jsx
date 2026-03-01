@@ -1,5 +1,6 @@
 import React from 'react';
 import { Rocket, Target, Palette, Globe, Eraser, Zap } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 
@@ -26,7 +27,7 @@ const ComingSoon = () => {
             {t('comingSoon.title')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">{t('comingSoon.titleHighlight')}</span>
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">{t('comingSoon.description')}</p>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto"><BrandText text={t('comingSoon.description')} /></p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {itemKeys.map((key, i) => {
