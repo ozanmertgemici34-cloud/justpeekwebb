@@ -1,26 +1,29 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import Features from '../components/Features';
-import WhyPremium from '../components/WhyPremium';
+import WhyJustPeek from '../components/WhyJustPeek';
+import TrustGuarantee from '../components/TrustGuarantee';
 import Security from '../components/Security';
-import Testimonials from '../components/Testimonials';
+import AimbotSection from '../components/AimbotSection';
+import EspSection from '../components/EspSection';
+import PremiumExperience from '../components/PremiumExperience';
+import ComingSoon from '../components/ComingSoon';
 import Pricing from '../components/Pricing';
 import EmailCapture from '../components/EmailCapture';
 import Footer from '../components/Footer';
-import { useLanguage } from '../context/LanguageContext';
 
 const Home = () => {
-  const { language } = useLanguage();
-  
   return (
     <div className="min-h-screen bg-black">
       <Navbar />
       <Hero />
-      <Features />
-      <WhyPremium />
+      <WhyJustPeek />
+      <TrustGuarantee />
       <Security />
-      <Testimonials language={language} />
+      <AimbotSection />
+      <EspSection />
+      <PremiumExperience />
+      <ComingSoon />
       <Pricing />
       <EmailCapture />
       <Footer />

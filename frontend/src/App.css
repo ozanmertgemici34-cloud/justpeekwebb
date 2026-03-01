@@ -1,46 +1,83 @@
-/* Mevcut Animasyonların */
-@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-@keyframes gradient { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-@keyframes scroll { 0% { transform: translateY(0); } 50% { transform: translateY(8px); } 100% { transform: translateY(0); } }
-
-.animate-float { animation: float 3s ease-in-out infinite; }
-.animate-gradient { background-size: 200% 200%; animation: gradient 3s ease infinite; }
-.animate-scroll { animation: scroll 2s ease-in-out infinite; }
-
-/* --- 4:3 Görüntüsünü Kökten Çözen Ayarlar --- */
-
-.App {
-    min-height: 100vh;
-    width: 100%; /* Sitenin tüm genişliğe yayılmasını sağlar */
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; <-- Sıkıştırmaya sebep olan bu satırı kaldırdık */
-    background-color: #000;
-    overflow-x: hidden;
+/* Custom Animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
-/* Sayfa içindeki ana bölümlerin tam genişlikte kalmasını garanti eder */
-.App > div, .App > header, .App > main, .App > nav {
-    width: 100%;
+@keyframes gradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
-/* Menü butonlarındaki o beyaz kutu ve hizalama pürüzlerini temizler */
-nav button, 
-nav a, 
-.nav-link, 
-header button {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    color: white !important;
-    text-decoration: none;
+@keyframes scroll {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(8px);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
-/* Standart Ayarlar */
-html { scroll-behavior: smooth; }
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #0a0a0a; }
-::-webkit-scrollbar-thumb { background: #DC143C; border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: #FF1744; }
-::selection { background: #DC143C; color: white; }
-button, a { transition: all 0.3s ease; cursor: pointer; }
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+}
+
+.animate-scroll {
+    animation: scroll 2s ease-in-out infinite;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #DC143C;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #FF1744;
+}
+
+/* Selection color */
+::selection {
+    background: #DC143C;
+    color: white;
+}
+
+/* Button hover effects */
+button, a {
+    transition: all 0.3s ease;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+    outline: 2px solid #DC143C;
+    outline-offset: 2px;
+}

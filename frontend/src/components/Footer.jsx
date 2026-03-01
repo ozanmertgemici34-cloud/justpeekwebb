@@ -1,5 +1,6 @@
 import React from 'react';
 import Logo from './Logo';
+import BrandText from './BrandText';
 import { Mail, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
@@ -16,7 +17,7 @@ const Footer = () => {
           <div>
             <Logo size="md" className="mb-4" />
             <p className="text-gray-400 text-sm leading-relaxed">
-              {t('footer.description')}
+              <BrandText text={t('footer.description')} />
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
+import BrandText from './BrandText';
 import { ArrowRight, Shield, Ghost } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
@@ -38,7 +39,8 @@ const Hero = () => {
 
         {/* Main Heading */}
         <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-          <span className="text-white">{t('hero.title')}</span>
+          <span className="text-white">Just</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600">Peek</span>
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-600 to-rose-600 animate-gradient">
             {t('hero.subtitle')}
@@ -47,7 +49,7 @@ const Hero = () => {
 
         {/* Description */}
         <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-          {t('hero.description')}
+          <BrandText text={t('hero.description')} />
         </p>
 
         {/* CTA Buttons */}

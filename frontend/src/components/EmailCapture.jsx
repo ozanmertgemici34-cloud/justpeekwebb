@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, ArrowRight, CheckCircle, AlertCircle } from 'lucide-react';
+import BrandText from './BrandText';
 import { useLanguage } from '../context/LanguageContext';
 import { getTranslation } from '../translations';
 import { emailAPI } from '../services/api';
@@ -58,7 +59,7 @@ const EmailCapture = () => {
             </h2>
             
             <p className="text-gray-400 text-lg">
-              {t('contact.description')}
+              <BrandText text={t('contact.description')} />
             </p>
           </div>
 
