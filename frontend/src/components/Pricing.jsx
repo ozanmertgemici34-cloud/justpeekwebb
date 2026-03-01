@@ -100,7 +100,7 @@ const Pricing = () => {
         {/* Header */}
         <div className="text-center mb-3">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
-            {t('pricing.title')}
+            <BrandText text={t('pricing.title')} />
           </h2>
           <p className="text-2xl md:text-3xl font-bold text-red-500 mb-4">
             {t('pricing.titleSub')}
