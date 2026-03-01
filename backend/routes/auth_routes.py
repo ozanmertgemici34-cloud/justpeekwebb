@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends
-from models import UserCreate, UserLogin, TokenResponse, UserResponse, PasswordResetRequest, PasswordReset, UserUpdate, MessageResponse
+from models import UserCreate, UserLogin, TokenResponse, UserResponse, PasswordResetRequest, PasswordReset, UserUpdate, MessageResponse, ChangePassword
 from auth_utils import get_password_hash, verify_password, create_access_token
 from middleware import get_current_user
 from email_service import EmailService, generate_reset_token, verify_reset_token
@@ -115,27 +115,18 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         discord_username=current_user.get("discord_username")
     )
 
-@router.post("/request-reset", response_model=MessageResponse)
+@router.post("/request-reset")
 async def request_password_reset(request: PasswordResetRequest):
-    """Request password reset"""
+    """Request password reset - returns token directly since email is mocked"""
     user = await db.users.find_one({"email": request.email})
     if not user:
-        # Don't reveal if email exists
-        return MessageResponse(
-            success=True,
-            message="If the email exists, a reset link has been sent"
-        )
+        return {"success": True, "message": "If the email exists, a reset link has been sent", "token": None}
     
-    # Generate reset token
     reset_token = generate_reset_token(request.email)
-    
-    # Send reset email
     await EmailService.send_password_reset_email(request.email, reset_token)
     
-    return MessageResponse(
-        success=True,
-        message="Password reset email sent"
-    )
+    # Return token directly since email service is mocked
+    return {"success": True, "message": "Password reset email sent", "token": reset_token}
 
 @router.post("/reset-password", response_model=MessageResponse)
 async def reset_password(reset_data: PasswordReset):
@@ -193,3 +184,24 @@ async def update_profile(
         purchases_count=purchases_count,
         discord_username=updated_user.get("discord_username")
     )
+
+
+@router.put("/change-password")
+async def change_password(
+    data: ChangePassword,
+    current_user: dict = Depends(get_current_user)
+):
+    """Change password from profile page"""
+    if not verify_password(data.current_password, current_user["password_hash"]):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    
+    new_hash = get_password_hash(data.new_password)
+    await db.users.update_one(
+        {"_id": current_user["_id"]},
+        {"$set": {"password_hash": new_hash, "updated_at": datetime.utcnow()}}
+    )
+    
+    return {"success": True, "message": "Password changed successfully"}

@@ -56,6 +56,15 @@ async def mark_notification_read(
     except:
         raise HTTPException(status_code=400, detail="Invalid notification ID")
 
+@router.delete("/delete-all")
+async def delete_all_notifications(current_user: dict = Depends(get_current_user)):
+    """Delete all notifications for current user"""
+    result = await db.notifications.delete_many(
+        {"user_id": str(current_user["_id"])}
+    )
+    return {"success": True, "message": f"{result.deleted_count} notifications deleted"}
+
+
 @router.delete("/{notification_id}")
 async def delete_notification(
     notification_id: str,

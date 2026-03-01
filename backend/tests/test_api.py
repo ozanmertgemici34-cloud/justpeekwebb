@@ -7,7 +7,7 @@ import requests
 import os
 import uuid
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://justpeek-test.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://purchase-hub-28.preview.emergentagent.com').rstrip('/')
 
 # Test credentials
 ADMIN_EMAIL = "ozanmertgemici34@gmail.com"

@@ -35,6 +35,10 @@ class PasswordReset(BaseModel):
     token: str
     new_password: str
 
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str
+
 class PurchaseBase(BaseModel):
     product: str
     price: str
@@ -61,6 +65,7 @@ class PurchaseRequestCreate(BaseModel):
 
 class PurchaseRequestResponse(BaseModel):
     id: str
+    order_number: str
     user_id: Optional[str] = None
     email: EmailStr
     discord_username: str

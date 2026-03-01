@@ -7,34 +7,40 @@ JustPeek yazılımı için pazarlama ve satış portalı. Temel gereksinimler:
 - Admin paneli (ozanmertgemici34@gmail.com)
 - Satın alma talep sistemi (kullanıcı -> admin onay)
 - i18n: Türkçe & İngilizce tam dil desteği
-- Fiyatlandırma: Planları herkese göster, fiyatları giriş yapmayana gizle
 - Discord'a yönlendirme
 
 ## Architecture
-- **Frontend:** React 19, React Router v7, TailwindCSS, Axios, Context API (Auth + Language)
+- **Frontend:** React 19, React Router v7, TailwindCSS, Axios, Context API, Recharts
 - **Backend:** FastAPI, Motor (async MongoDB), JWT (python-jose), passlib (bcrypt)
 - **Database:** MongoDB
 
 ## What's Been Implemented
 
-### Phase 1-2: Foundation (Complete)
-- Landing page with stealth logo, hero, features, security sections
-- Dark theme with red accents (#DC143C)
-- Email capture form
-- Discord CTAs
+### Phase 1-4: Foundation, Full-Stack, Bug Fixes (Complete)
+- Landing page, dark theme, email capture, Discord CTAs
+- User registration & login (JWT), Admin panel, Notifications
+- F5 refresh fix, bulk delete fix, full i18n coverage
 
-### Phase 3: Full-Stack (Complete)
-- User registration & login (JWT-based)
-- Admin panel with tabs (Overview, Users, Emails, Purchase Requests)
-- Purchase request system (user submits, admin approves/rejects)
-- Notification system (on-site)
-- Role-based access control
+### Phase 5: Order Number System (1 Mar 2026) - COMPLETE
+- Unique JP-YYYYMMDD-XXXX format, admin search, user view
 
-### Phase 4: Bug Fixes (28 Feb 2026) - COMPLETE
-- **P0 FIXED:** F5 refresh no longer logs out users (AuthProvider loading guard)
-- **P1 FIXED:** Admin bulk delete, approve/reject now work (functions moved inside component)
-- **P2 FIXED:** Full i18n coverage (Features, Security, EmailCapture use translations)
-- **P2 FIXED:** Pricing shows plans to all, hides prices from logged-out users
+### Phase 6: Revenue Flow & Analytics (1 Mar 2026) - COMPLETE
+- Revenue flow: pending → approved → completed/cancelled
+- Product pricing: 1 Week=$2.99, 1 Month=$6.99, 2 Months=$11.99
+- 5 analytics charts (Recharts): daily/monthly revenue, registrations, status/product distribution
+
+### Phase 7: Notifications, Profile & Password Reset (1 Mar 2026) - COMPLETE
+- **Notifications:** "Tümünü Sil" (Delete All) + "Okundu" (Mark All Read) buttons
+- **Profile Page:** Profile info editing (name, discord) + password change section
+- **Password Reset:** Forgot password flow → token generation → new password form
+- Login page "Şifremi Unuttum" link
+
+## Purchase Request Status Flow
+```
+pending → approved → completed (revenue added)
+pending → approved → cancelled (no revenue)
+pending → rejected (no revenue)
+```
 
 ## API Endpoints
 | Method | Endpoint | Description |
@@ -43,45 +49,39 @@ JustPeek yazılımı için pazarlama ve satış portalı. Temel gereksinimler:
 | POST | /api/auth/login | Login, returns JWT |
 | GET | /api/auth/me | Current user info |
 | PUT | /api/auth/profile | Update profile |
-| POST | /api/auth/request-reset | Request password reset |
-| POST | /api/auth/reset-password | Reset password |
-| GET | /api/purchases/ | User purchases |
+| PUT | /api/auth/change-password | Change password (requires current pw) |
+| POST | /api/auth/request-reset | Request password reset (returns token) |
+| POST | /api/auth/reset-password | Reset password with token |
 | POST | /api/purchase-requests/ | Create purchase request |
 | GET | /api/purchase-requests/ | User's requests |
-| GET | /api/admin/users | All users (admin) |
-| PUT | /api/admin/users/{id}/ban | Ban user |
-| PUT | /api/admin/users/{id}/unban | Unban user |
-| DELETE | /api/admin/users/{id} | Delete user |
 | GET | /api/admin/stats | Dashboard stats |
-| GET | /api/admin/purchase-requests | All requests (admin) |
-| PUT | /api/admin/purchase-requests/{id}/status | Approve/reject |
+| GET | /api/admin/analytics | Chart data |
+| GET | /api/admin/purchase-requests | All requests (supports ?search=) |
+| PUT | /api/admin/purchase-requests/{id}/status | Status update |
 | DELETE | /api/admin/purchase-requests/{id} | Delete request |
-| POST | /api/emails/ | Save email |
-| GET | /api/emails/ | All emails (admin) |
-| DELETE | /api/admin/emails/{id} | Delete email |
+| GET | /api/admin/users | All users |
 | GET | /api/notifications/ | User notifications |
-| PUT | /api/notifications/{id}/read | Mark as read |
+| DELETE | /api/notifications/delete-all | Delete all notifications |
+| POST | /api/notifications/mark-all-read | Mark all as read |
 
 ## Database Collections
-- **users:** name, email, password_hash, role, status, created_at
-- **purchase_requests:** user_id, email, discord_username, product, message, status
+- **users:** name, email, password_hash, role, status, discord_username, created_at
+- **purchase_requests:** user_id, email, discord_username, product, message, status, order_number, created_at, updated_at
 - **purchases:** user_id, product, price, status, purchased_at, expiry_date
 - **notifications:** user_id, title, message, type, read, created_at
 - **emails:** email, created_at, status
 
 ## Credentials
 - Admin: ozanmertgemici34@gmail.com / ozan201223
-- Discord: https://discord.gg/Z2MdBahqcN
+
+## Mocked Services
+- **Email Service:** Prints to console instead of sending. Reset tokens returned in API response.
 
 ## Prioritized Backlog
 
-### P1 - Next
-- [ ] Profile editing page (UI exists but needs polish)
-- [ ] Password reset flow (backend exists, needs email service)
-
 ### P2 - Future
-- [ ] Email notifications (SendGrid/similar integration)
-- [ ] Advanced admin analytics with charts
-- [ ] SEO optimization
-- [ ] Social media meta tags
+- [ ] Real email notifications (SendGrid/Resend integration)
+- [ ] "v6.0 The Ultra" features (ComingSoon.jsx)
+- [ ] SEO optimization & social meta tags
 - [ ] Activity logs
+- [ ] CSV/Excel export for admin
