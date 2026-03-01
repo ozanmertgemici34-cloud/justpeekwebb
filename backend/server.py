@@ -1,10 +1,9 @@
-import os
-import logging
-import uvicorn
 from fastapi import FastAPI
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+import os
+import logging
 from pathlib import Path
 
 # Import routes
@@ -98,8 +97,3 @@ async def startup_event():
 async def shutdown_db_client():
     client.close()
     logger.info("Database connection closed")
-
-# --- SİSTEMİ 7/24 UYANIK TUTACAK MOTOR EKLENDİ ---
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    uvicorn.run("server:app", host="0.0.0.0", port=port, reload=False)
